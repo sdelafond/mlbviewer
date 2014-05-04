@@ -1,0 +1,132 @@
+MLBPLAY - JUST GIVE ME MY GAME
+
+The motivation for mlbplay is simple.  Most of the time, you just want to
+watch your team (or teams) and, of course, you want your team's broadcast
+streams.  The other games of the day are of secondary concern.
+
+So wouldn't it be great to have a command that says, "I don't care about the 
+listings, just give me my team's game"?
+
+That's what mlbplay does.  And so much more.
+
+LEVERAGING THE POWER OF MLBVIEWER WITHOUT THE CURSES
+
+Mlbplay is written using the same MLBviewer library that mlbviewer uses.  It 
+uses the same configuration file, writes the same log, and supports many of 
+the same features without the curses GUI.  Think of mlbplay as shorthand for 
+mlbviewer.
+
+Features supported in mlbviewer that are also supported in mlbplay:
+
+audio_follow
+video_follow
+speed selection
+condensed games
+debug (network debugging)
+zdebug (media listings debugging)
+nexdef
+adaptive streaming (through configuration file)
+
+BASIC USAGE
+
+mlbplay <streamtype>=<team> [name=value] [name=value] ...
+
+All arguments take the form of name=value (no "-"'s)  All arguments have both
+a long name and a short key.  The short keys, whenever possible, are mapped to 
+the same keys used in mlbviewer.
+
+At least a streamtype=team pair needs to be specified.
+
+Streamtypes are (long name, short key):
+
+'audio' or 'a'
+'video' or 'v'
+'condensed' or 'c'
+
+Teams are specified using the teamcodes that are used in audio_follow, 
+video_follow, blackout, and favorite config file options.  
+
+Teamcodes are:
+
+     'ana', 'ari', 'atl', 'bal', 'bos', 'chc', 'cin', 'cle', 'col',
+     'cws', 'det', 'fla', 'hou', 'kc', 'la', 'mil', 'min', 'nym',
+     'nyy', 'oak', 'phi', 'pit', 'sd', 'sea', 'sf', 'stl', 'tb',
+     'tex', 'tor', 'was'
+
+Additionally, 'al' and 'nl' are supported for the All-Star Game, and 'uft'
+and 'wft' are supported for the Futures Game (held during All-Star week.)
+
+By specifying a team, it is also implied that this team should be used
+for selecting the broadcast stream.  In other words, specifying the team 
+automatically implies audio_follow or video_follow.  For national broadcasts
+(Game Of The Week) and condensed games, there is only one stream available 
+and this is the stream that will be selected.
+
+FULL LIST OF OPTIONS (long name, short key):
+
+audio, a     : value should be a team, implies audio_follow
+video, v     : value should be a team, implies video_follow
+condensed, c : value should be a team, follow doesn't apply here
+startdate, j : value should be a date in mm/dd/yy format
+speed, p     : value is the speed of the stream to select in Kbps
+debug, d     : True/False (or 1/0) value that enables network debugging
+zdebug, z    : True/False (or 1/0) value that enables media listing debugging
+nexdef, n    : True/False (or 1/0) value, implies video_follow
+event_id, e  : value should be event-id which can be found from mlblistings.py
+inning, i    : value should be 't' (top) or 'b' (bottom) plus inning number
+               e.g., t9 for top of 9th or b5 for bottom of 5th
+
+
+Valid speeds are 200, 500, 1200, 1800, or 2400.  Additionally, nexdef provides
+speed values of 3000 and 4500 through the max_bps setting in ~/.mlb/config.
+
+EXAMPLES
+
+To watch today's Boston game:
+
+mlbplay v=bos
+
+To listen to today's Texas game:
+
+mlbplay a=tex
+
+To watch today's Detroit condensed game:
+
+mlbplay c=det
+
+To watch the Yankees broadcast of Boston @ New York for the 5/14/2011 game:
+
+mlbplay v=nyy j=05/14/11
+
+To watch the same game in nexdef:
+
+mlbplay v=nyy j=05/14/11 n=1
+
+
+ADDITIONAL OPTIONS SUPPORTED
+
+Since the mlbplay code utilizes the MLBviewer library, there are a few 
+additional options supported through the configuration file.
+
+show_player_command (True/False): displays the command used to play the media
+
+video_player, audio_player, top_plays_player : the player commands to use
+
+If not specified on mlbplay command-line, these values are taken from config
+file or mlbviewer defaults:
+
+debug, use_nexdef, speed, use_librtmp
+
+NEW LIBRTMP SUPPORT (EXPERIMENTAL)
+
+Recent versions of FFMpeg have LibRTMP support.  This is the ability to stream
+RTMP without the need of using external programs like rtmpdump or flvstreamer.
+The media URL passed to mplayer or VLC has to be formatted with the RTMP
+connection parameters appended.  Mlbviewer support of librtmp is still 
+experimental.  It is recommended to enable this option only if you know how
+to build and install librtmp.so from rtmpdump source and rebuild either 
+mplayer or vlc to include librtmp support.  As Linux distributions get their 
+annual refreshes, they will hopefully include pre-built versions of mplayer,
+vlc, and librtmp to make this less of a hacker option.  To test librtmp
+with mlbplay (or mlbviewer), include "use_librtmp=True" in ~/.mlb/config.
+

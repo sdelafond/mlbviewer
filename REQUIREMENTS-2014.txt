@@ -1,0 +1,113 @@
+REQUIREMENTS FOR MLBVIEWER 2014 SEASON
+
+FOR 2013 USERS:
+
+If you used mlbviewer in 2013, not much has changed.
+
+1. Download mlbhls (if you plan to use nexdef), build it, install it.
+
+svn co https://mlbtv-hls-nexdef.googlecode.com/svn/branches/experimental mlbhls
+cd mlbhls
+make
+sudo cp mlbhls /usr/bin
+
+!! YOU MUST UPDATE TO MINIMUM SVN REVISION 67 FOR MLBHLS !!
+
+2. If you were using speed=800 in $HOME/.mlb/config, change that to 1200. The
+800 stream may not exist in 2014.
+
+Other than that, you should not have to do anything different for 2014.
+
+NEW USERS:
+
+Python2.7 or newer (not including Python3.x)
+
+Python3.x is not backwards compatible with Python2.x.  As such, a significant
+chunk of mlbviewer would have to be rewritten for 3.x.  If your system uses
+python3 by default (e.g. ls -l `which python` points to python3), you can
+start mlbviewer using python2 with: "python2 mlbviewer.py"
+
+
+Please read on for further requirements depending on whether you are an MLB.TV
+Premium or MLB.TV Basic subscriber.
+
+NEXDEF STREAMS
+
+You will need mlbhls (see above) to access the higher bitrates.
+
+NON-PREMIUM USERS (and Gameday Audio subscribers)
+
+You will need rtmpdump version 1.7 or greater.
+
+rtmpdump - http://rtmpdump.mplayerhq.hu/
+
+Non-premium users can access nexdef streams using mlbhls.  Non-premium users
+should set use_wired_web=1 in the config file to access the correct nexdef
+streams. 
+
+NON-SUBSCRIBERS
+
+The following features are available to non-subscribers (those without an 
+MLB.TV subscription):
+
+- Game Highlights
+- Condensed Games
+- Master Scoreboard View
+- Line Scores
+- Box Scores
+- Standings
+- Free Game Of The Day
+
+Non-subscribers should still fill in user= and pass= in ~/.mlb/config using
+their mlb.com username and password.  Without this, the Free Game Of The Day 
+will not be available.
+
+MLB CLASSICS
+
+Watch classic games and episodes of This Week in Baseball with mlbclassics.py.
+
+Additional requirements for mlbclassics.py:
+
+python-gdata
+youtube-dl
+
+An MLB.com/MLB.TV account is not necessary for mlbclassics.
+
+
+MPLAYER2 VS MPLAYER
+
+Mplayer2 is fork of the mplayer project.  It also seems to play the streams 
+and handle stream rate switches (important if you enable adaptive streaming
+in nexdef mode - see README for more details) better than the original mplayer.
+For this reason, it is recommended that you download, compile, and install
+mplayer2 for use with mlbviewer and MLB.TV.
+
+http://www.mplayer2.org
+
+
+The basic instructions are:
+
+1. Download a tarball.
+2. Unpack it.
+3. Run 'make -j 6'
+4. Run 'make install'
+
+The binary is statically linked so it will not replace the library files that
+other players like vlc are using.
+
+---------------------------------------------------------------------------
+
+READ THE README FOR MORE HELP ON USING MLBVIEWER 2014.
+
+Also, you can post any support questions either to the Sourceforge forum at:
+
+https://sourceforge.net/forum/?group_id=224512
+
+Or the Linux Questions thread here:
+
+http://www.linuxquestions.org/questions/fedora-35/mlb.tv-in-linux-432479/
+
+No, you don't have to read all 200+ pages.  Just skip to the last page
+and post question to the end of the thread.  There are several helpful
+testers who have been with this project since the start.
+
