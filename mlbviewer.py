@@ -380,6 +380,7 @@ def mainloop(myscr,mycfg,mykeys):
                 listwin.records = available[0:curses.LINES-4]
                 listwin.record_cursor = 0
                 listwin.current_cursor = 0
+                listwin.focusFavorite()
             except (KeyError,MLBXmlError,MLBUrlError),detail:
                 if mycfg.get('debug'):
                     raise Exception,detail
