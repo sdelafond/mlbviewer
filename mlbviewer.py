@@ -203,10 +203,6 @@ def mainloop(myscr,mycfg,mykeys):
 
     # If favorite is not none, focus the cursor on favorite team
     if mycfg.get('favorite') is not None:
-        favorite=mycfg.get('favorite')
-        for follow in ( 'video_follow', 'audio_follow' ):
-            if favorite not in mycfg.get(follow):
-                mycfg.set(follow,favorite)
         try:
             mywin.focusFavorite()
         except IndexError:
