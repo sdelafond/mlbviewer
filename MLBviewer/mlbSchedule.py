@@ -41,7 +41,7 @@ except:
     sys.exit()
 
 def gameTimeConvert(listdate, time_shift=None):
-    if time_shift is not None:
+    if time_shift is not None and time_shift != '':
         offset=timeShiftOverride(time_shift=time_shift)
         localtime = listdate + offset
         return localtime
