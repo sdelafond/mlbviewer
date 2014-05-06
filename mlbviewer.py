@@ -70,6 +70,17 @@ def prompter(win,prompt):
 
     return output
 
+def timeShiftOverride(time_shift=None,reverse=False):
+    try:
+        plus_minus=re.search('[+-]',time_shift).group()
+        (hrs,min)=time_shift[1:].split(':')
+        offset=datetime.timedelta(hours=int(plus_minus + hrs), minutes=int(min))
+        offset=(offset,offset*-1)[reverse]
+    except:
+        offset=datetime.timedelta(0,0)
+    return offset
+
+
 def mainloop(myscr,mycfg,mykeys):
 
     # some initialization
@@ -1204,7 +1215,6 @@ if __name__ == "__main__":
                   'wiggle_timer': 0.5,
                   'x_display': '',
                   'top_plays_player': '',
-                  'time_offset': '',
                   'max_bps': 1200000,
                   'min_bps': 500000,
                   'live_from_start': 0,
@@ -1264,8 +1274,13 @@ if __name__ == "__main__":
         startyear  = int('20' + split[4])
         startdate = (startyear, startmonth, startday)
     else:
-        now = datetime.datetime.now()
-        dif = datetime.timedelta(1)
+        if mycfg.get('time_offset') is not None:
+            offset=timeShiftOverride(time_shift=mycfg.get('time_offset'),
+                                     reverse=True)
+        else:
+            offset=datetime.timedelta(0)
+        now = datetime.datetime.now() + offset
+        dif = datetime.timedelta(days=1)
         if now.hour < 9:
             now = now - dif
         startdate = (now.year, now.month, now.day)

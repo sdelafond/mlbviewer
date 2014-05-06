@@ -41,6 +41,11 @@ except:
     sys.exit()
 
 def gameTimeConvert(listdate, time_shift=None):
+    if time_shift is not None:
+        offset=timeShiftOverride(time_shift=time_shift)
+        localtime = listdate + offset
+        return localtime
+
     tmp=time.localtime()
     etoffset=datetime.timedelta(0,(18000,14400)[tmp.tm_isdst])
     utcdate=listdate + etoffset
@@ -49,6 +54,17 @@ def gameTimeConvert(listdate, time_shift=None):
     localtime=utcdate-localoffset
     return localtime
 
+def timeShiftOverride(time_shift=None,reverse=False):
+    try:
+        plus_minus=re.search('[+-]',time_shift).group()
+        (hrs,min)=time_shift[1:].split(':')
+        offset=datetime.timedelta(hours=int(plus_minus+hrs), minutes=int(min))
+        offset=(offset,offset*-1)[reverse]
+    except:
+        #raise Error,"time_offset= in wrong format.  Should be +/-HH:MM where HH is 24hour clock"
+        offset=datetime.timedelta(0,0)
+    return offset
+        
 
 def padstr(num):
     if len(str(num)) < 2: 
