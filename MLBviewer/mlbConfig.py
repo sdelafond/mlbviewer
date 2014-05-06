@@ -57,6 +57,9 @@ class MLBConfig:
 
     def set(self,key,value):
         try:
-            self.data[key] = value
+            if key in ( 'audio_follow', 'video_follow' ):
+                self.data[key].append(value)
+            else:
+                self.data[key] = value
         except:
             return None
