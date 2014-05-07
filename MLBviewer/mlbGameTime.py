@@ -39,7 +39,7 @@ class MLBGameTime:
 
     def localize(self):
         if self.shift is not None and self.shift != '':
-            return self.override(time_shift=self.shift)
+            return self.override(offset=self.shift)
         utctime = self.eastern + self.utcoffset()
         now = time.localtime()
         localzone = (time.timezone,time.altzone)[now.tm_isdst]
