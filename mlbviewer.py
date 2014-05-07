@@ -1314,21 +1314,26 @@ if __name__ == "__main__":
         startyear  = int('20' + split[4])
         startdate = (startyear, startmonth, startday)
     else:
-        if mycfg.get('time_offset') is not None:
-            now=datetime.datetime.now()
-            gametime=MLBGameTime(now,shift=mycfg.get('time_offset'))
-            offset=gametime.customoffset(time_shift=mycfg.get('time_offset'))
+        now=datetime.datetime.now()
+        shift=mycfg.get('time_offset')
+        gametime=MLBGameTime(now,shift=shift)
+
+        if shift is not None and shift != '':
+            offset=gametime.customoffset(time_shift=shift)
+            now = now - offset
         else:
-            now=time.localtime()
-            localzone=(time.timezone,time.altzone)[now.tm_isdst]
-            # reverse the sign of the offset as we essentially want to 
-            # convert localtime to US/Eastern for calculating the startdate.
-            offset=datetime.timedelta(0,localzone)
-        now = datetime.datetime.now()
-        dif = datetime.timedelta(days=1)
+            tt=time.localtime()
+            localzone=(time.timezone,time.altzone)[tt.tm_isdst]
+            localoffset=datetime.timedelta(0,localzone)
+            easternoffset=gametime.utcoffset()
+            offset=localoffset - easternoffset
+            now = now + offset
+        #print "now = %s" % repr(now)
+        # morning people may want yesterday's highlights, boxes, lines, etc
+        # before day games begin.
         if now.hour < 9:
+            dif = datetime.timedelta(days=1)
             now = now - dif
-        now = now - offset
         startdate = (now.year, now.month, now.day)
         #raise Exception,"now.day= %s, offset= %s" % ( now.day, repr(offset) )
 
