@@ -5,6 +5,7 @@ from mlbListWin import MLBListWin
 from mlbMasterScoreboard import MLBMasterScoreboard
 from mlbError import *
 from mlbSchedule import gameTimeConvert
+from mlbGameTime import MLBGameTime
 import datetime
 import curses
 
@@ -137,7 +138,11 @@ class MLBMasterScoreboardWin(MLBListWin):
         gametime=game[gid]['time']
         ampm=game[gid]['ampm']
         gt = datetime.datetime.strptime('%s %s'%(gametime, ampm),'%I:%M %p')
-        lt = gameTimeConvert(gt)
+        now = datetime.datetime.now()
+        gt = gt.replace(year=now.year, month=now.month, day=now.day)
+        #lt = gameTimeConvert(gt)
+        gametime=MLBGameTime(gt,self.mycfg.get('time_offset'))
+        lt=gametime.localize()
         time_str = lt.strftime('%I:%M %p')
         away_str = ' AP: %s (%s-%s %s)' % \
                    ( game[gid]['pitchers']['away_probable_pitcher'][1],
