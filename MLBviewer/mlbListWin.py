@@ -265,6 +265,7 @@ class MLBListWin:
             status_str = STATUSLINE.get(self.records[n][5],
                                     "Unknown Flag = "+self.records[n][5])
         except:
+            raise
             raise Exception,"current_cursor:%s, len:%s"%(n,str(len(self.records)))
         if len(self.records[n][2]) + len(self.records[n][3]) == 0:
             status_str += ' (No media)'

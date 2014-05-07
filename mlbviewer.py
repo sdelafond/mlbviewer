@@ -204,6 +204,11 @@ def mainloop(myscr,mycfg,mykeys):
     # If favorite is not none, focus the cursor on favorite team
     if mycfg.get('favorite') is not None:
         try:
+            favorite=mycfg.get('favorite')
+            for f in favorite:
+                for follow in ( 'audio_follow', 'video_follow' ):
+                    if f not in mycfg.get(follow):
+                        mycfg.set(follow, f)
             mywin.focusFavorite()
         except IndexError:
             raise Exception,repr(mywin.records)
@@ -524,6 +529,41 @@ def mainloop(myscr,mycfg,mykeys):
             if curses.LINES-4 > 14 and mywin != calwin:
                 myscr.addstr(11,0,'preferred media for current cursor:')
                 myscr.addstr(12,0,repr(prefer))
+            myscr.refresh()
+            mywin.titlewin.refresh()
+            mywin.statusWrite('Press a key to continue...',wait=-1)
+
+        # MEDIA DETAIL
+        if c in mykeys.get('MEDIA_DETAIL'):
+            game=listwin.records[listwin.current_cursor]
+            home=game[0]['home']
+            away=game[0]['away']
+            start=game[1]
+            starttime=start.strftime('%H:%M')
+            media=dict()
+            media['video'] = dict()
+            media['audio'] = dict()
+            ( media['video']['home'], media['video']['away'] ) = game[2]
+            ( media['audio']['home'], media['audio']['away'] ) = game[3]
+            gameid=game[6]
+            myscr.clear()
+            mywin.titlewin.clear()
+            mywin.titlewin.addnstr(0,0,'MEDIA_DETAIL FOR %s @ %s' % \
+                          ( TEAMCODES[away][1], TEAMCODES[home][1] ),
+                                       curses.COLS-2)
+            mywin.titlewin.hline(1, 0, curses.ACS_HLINE, curses.COLS-1)
+            myscr.addnstr(2,0,"%3s : [V] %s" % \
+                          ( away.upper() , media['video']['away'][0] ),
+                          curses.COLS-2 )
+            myscr.addnstr(2,20,"%3s : [A] %s" % \
+                          ( "" , media['audio']['away'][0] ),
+                          curses.COLS-2 )
+            myscr.addnstr(3,0,"%3s : [V] %s" % \
+                          ( home.upper() , media['video']['home'][0] ),
+                          curses.COLS-2 )
+            myscr.addnstr(3,20,"%3s : [A] %s" % \
+                          ( "" , media['audio']['home'][0] ),
+                          curses.COLS-2 )
             myscr.refresh()
             mywin.titlewin.refresh()
             mywin.statusWrite('Press a key to continue...',wait=-1)

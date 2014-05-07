@@ -31,6 +31,7 @@ from mlbConstants import *
 from mlbLog import MLBLog
 from mlbError import *
 from mlbHttp import MLBHttp
+from mlbGameTime import MLBGameTime
 
 try:
     from xml.dom.minidom import parse
@@ -352,7 +353,9 @@ class MLBSchedule:
             # And now we convert that to the user's local, or
             # chosen time zone.
             dct['start_time'] = raw_time.strftime('%H:%M:%S')
-            dct['event_time'] = gameTimeConvert(raw_time, self.shift)
+            #dct['event_time'] = gameTimeConvert(raw_time, self.shift)
+            gametime = MLBGameTime(raw_time, self.shift)
+            dct['event_time'] = gametime.localize()
             if not TEAMCODES.has_key(dct['away']):
                 TEAMCODES[dct['away']] = TEAMCODES['unk']
             if not TEAMCODES.has_key(dct['home']):
