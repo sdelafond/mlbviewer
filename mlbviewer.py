@@ -1315,14 +1315,21 @@ if __name__ == "__main__":
         startdate = (startyear, startmonth, startday)
     else:
         if mycfg.get('time_offset') is not None:
-            offset=timeShiftOverride(time_shift=mycfg.get('time_offset'),
-                                     reverse=True)
+            now=datetime.datetime.now()
+            gametime=MLBGameTime(now,shift=mycfg.get('time_offset'))
+            offset=gametime.customoffset(time_shift=mycfg.get('time_offset'))
         else:
-            offset=datetime.timedelta(0)
-        now = datetime.datetime.now() + offset
+            now=time.localtime()
+            localzone=(time.timezone,time.altzone)[now.tm_isdst]
+            # reverse the sign of the offset as we essentially want to 
+            # convert localtime to US/Eastern for calculating the startdate.
+            offset=datetime.timedelta(0,localzone)
+        now = datetime.datetime.now()
         dif = datetime.timedelta(days=1)
         if now.hour < 9:
             now = now - dif
+        now = now - offset
         startdate = (now.year, now.month, now.day)
+        #raise Exception,"now.day= %s, offset= %s" % ( now.day, repr(offset) )
 
     curses.wrapper(mainloop, mycfg, mykeys)

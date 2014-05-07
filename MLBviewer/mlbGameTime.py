@@ -55,7 +55,6 @@ class MLBGameTime:
             offset=datetime.timedelta(hours=int(plus_minus+hrs),minutes=int(min))
             offset=(offset,offset*-1)[reverse]
         except:
-            raise
             offset=datetime.timedelta(0,0)
         return offset
 
