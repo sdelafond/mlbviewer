@@ -258,9 +258,9 @@ def mainloop(myscr,mycfg,mykeys):
                 curses.resizeterm(y, x)
                 mywin.resize()
                 listwin.resize()
-                if mywin in ( sbwin, ):
+                if mywin in ( sbwin, detailwin ):
                     # align the cursors between scoreboard and listings
-                    sbwin.setCursors(listwin.record_cursor, 
+                    mywin.setCursors(listwin.record_cursor, 
                                      listwin.current_cursor)
                 continue
         
@@ -318,7 +318,7 @@ def mainloop(myscr,mycfg,mykeys):
             mywin.PgUp()
 
         if c in mykeys.get('JUMP'):
-            if mywin not in ( listwin, sbwin, calwin ):
+            if mywin not in ( listwin, sbwin, calwin, detailwin ):
                 continue
             jump_prompt = 'Date (m/d/yy)? '
             if datetime.datetime(mysched.year,mysched.month,mysched.day) <> \
@@ -374,6 +374,16 @@ def mainloop(myscr,mycfg,mykeys):
                     sbwin.setCursors(listwin.record_cursor, 
                                      listwin.current_cursor)
                     mywin = sbwin
+                elif mywin == detailwin:
+                    game=listwin.records[listwin.current_cursor]
+                    gameid=game[6]
+                    detail = MLBMediaDetail(mycfg,listwin.data)
+                    games = detail.parseListings()
+                    detailwin = MLBMediaDetailWin(myscr,mycfg,gameid,games)
+                    detailwin.getMediaDetail(gameid)
+                    mywin = detailwin
+                    mywin.setCursors(listwin.record_cursor, 
+                                     listwin.current_cursor)
                 continue
             try:
                 # Try 4-digit year first
@@ -423,7 +433,16 @@ def mainloop(myscr,mycfg,mykeys):
                 sbwin.setCursors(listwin.record_cursor, 
                                  listwin.current_cursor)
                 mywin = sbwin
-            
+            elif mywin == detailwin: 
+                game=listwin.records[listwin.current_cursor]
+                gameid=game[6]
+                detail = MLBMediaDetail(mycfg,listwin.data)
+                games = detail.parseListings()
+                detailwin = MLBMediaDetailWin(myscr,mycfg,gameid,games)
+                detailwin.getMediaDetail(gameid)
+                mywin = detailwin
+                mywin.setCursors(listwin.record_cursor, 
+                                 listwin.current_cursor)
 
         if c in mykeys.get('LEFT') or c in mykeys.get('RIGHT'):
             if mywin not in ( listwin, sbwin, linewin, calwin, detailwin ):
@@ -481,7 +500,8 @@ def mainloop(myscr,mycfg,mykeys):
                 detailwin = MLBMediaDetailWin(myscr,mycfg,gameid,games)
                 detailwin.getMediaDetail(gameid)
                 mywin = detailwin
-                listwin.PgUp()
+                mywin.setCursors(listwin.record_cursor, 
+                                 listwin.current_cursor)
 
         # DEBUG : NEEDS ATTENTION FOR SCROLLING
         if c in mykeys.get('MEDIA_DEBUG'):
@@ -552,7 +572,8 @@ def mainloop(myscr,mycfg,mykeys):
             detailwin = MLBMediaDetailWin(myscr,mycfg,gameid,games)
             detailwin.getMediaDetail(gameid)
             mywin = detailwin
-            listwin.PgUp()
+            detailwin.setCursors(listwin.record_cursor, 
+                             listwin.current_cursor)
 
         # SCREENS - NEEDS WORK FOR SCROLLING
         if c in mykeys.get('HELP'):
