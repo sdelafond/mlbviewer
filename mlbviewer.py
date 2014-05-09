@@ -1087,6 +1087,7 @@ def mainloop(myscr,mycfg,mykeys):
         # With luck, it can handle audio, video, condensed, and highlights
         if c in mykeys.get('VIDEO') or \
            c in mykeys.get('AUDIO') or \
+           c in mykeys.get('ALT_AUDIO') or \
            c in mykeys.get('CONDENSED_GAME'):
             if len(mywin.records) == 0:
                 continue
@@ -1101,11 +1102,14 @@ def mainloop(myscr,mycfg,mykeys):
                     mywin.statusWrite('Could not get preferred media for %s' %\
                                        GAMEID,wait=2)
                     continue
-            if c in mykeys.get('AUDIO'):
+            if c in mykeys.get('AUDIO') or mykeys.get('ALT_AUDIO'):
                 if mywin == topwin:
                     listwin.statusWrite(UNSUPPORTED,wait=2)
                     continue
-                streamtype = 'audio'
+                if c in mykeys.get('ALT_AUDIO'):
+                    streamtype = 'alt_audio'
+                else:
+                    streamtype = 'audio'
             elif c in mykeys.get('CONDENSED_GAME'):
                 #mywin.statusWrite('Retrieving requested media...')
                 streamtype = 'condensed'
@@ -1228,6 +1232,7 @@ if __name__ == "__main__":
                   'video_player': DEFAULT_V_PLAYER,
                   'audio_player': DEFAULT_A_PLAYER,
                   'audio_follow': [],
+                  'alt_audio_follow': [],
                   'video_follow': [],
                   'blackout': [],
                   'favorite': [],

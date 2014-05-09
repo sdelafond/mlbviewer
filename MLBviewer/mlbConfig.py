@@ -25,7 +25,7 @@ class MLBConfig:
                 key = key.strip()
                 val = val.strip()
                 # These are the ones that take multiple values
-                if key in ('blackout', 'audio_follow', 'video_follow', 'favorite', 'classics_users'):
+                if key in ('blackout', 'audio_follow', 'alt_audio_follow', 'video_follow', 'favorite', 'classics_users'):
                     if val not in self.data[key]:
                         self.data[key].append(val)
                 # These are the booleans:

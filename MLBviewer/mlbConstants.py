@@ -253,6 +253,7 @@ KEYBINDINGS_1 = {
     'QUIT'                : 'Quit mlbviewer',
     'HELP'                : 'Display version and keybindings',
     'AUDIO'               : 'Play Gameday audio of highlighted game',
+    'ALT_AUDIO'           : 'Play Gameday alternate audio of highlighted game',
     'DEBUG'               : 'Toggle debug (does not change config file)',
     'SPEED'               : 'Toggle speed (does not change config file)',
     'COVERAGE'            : 'Toggle coverage for HOME or AWAY stream',
@@ -263,6 +264,7 @@ KEYBINDINGS_1 = {
     'STANDINGS'           : 'View standings',
     'STATS'               : 'View hitting or pitching statistics',
     'CALENDAR'            : 'Calendar view',
+    'MEDIA_DETAIL'        : 'Media detail view',
     }
 
 STATKEYBINDINGS = {
@@ -282,11 +284,12 @@ STATKEYBINDINGS = {
 }
 
 HELPBINDINGS = (
-    ('COMMANDS', ('VIDEO', 'AUDIO', 'CONDENSED_GAME', 'DEBUG', 'NEXDEF', 
-                  'COVERAGE', 'HIGHLIGHTS_PLAYLIST', 'INNINGS') ),
+    ('COMMANDS', ('VIDEO', 'AUDIO', 'ALT_AUDIO', 'CONDENSED_GAME', 'DEBUG', 
+                  'NEXDEF', 'COVERAGE', 'HIGHLIGHTS_PLAYLIST', 'INNINGS') ),
     ('LISTINGS', ('UP', 'DOWN', 'LEFT', 'RIGHT', 'JUMP', 'SPEED', 'REFRESH' )),
     ('SCREENS', ('HIGHLIGHTS', 'HELP', 'LISTINGS', 'LINE_SCORE', 'BOX_SCORE',
-     'MASTER_SCOREBOARD', 'CALENDAR', 'STANDINGS', 'STATS', 'RSS', 'MILBTV' ) ),
+     'MASTER_SCOREBOARD', 'CALENDAR', 'STANDINGS', 'STATS', 'RSS', 'MILBTV',
+     'MEDIA_DETAIL' ) ),
     ('DEBUG', ( 'OPTIONS', 'DEBUG', 'MEDIA_DEBUG' )),
     )
 

@@ -95,7 +95,7 @@ class MediaStream:
         self.debug = cfg.get('debug')
 
         # The request format depends on the streamtype
-        if self.streamtype == 'audio':
+        if self.streamtype in ( 'audio', 'alt_audio' ):
             self.scenario = "AUDIO_FMS_32K"
             self.subject  = "MLBCOM_GAMEDAY_AUDIO"
         else:
@@ -234,9 +234,9 @@ class MediaStream:
                 if 'in-market' in dict['coverage_type']:
                     continue
             # 2. Trim out all non-English language broadcasts
-            if dict.has_key('language'):
-                if dict['language'] != 'EN':
-                    continue
+            #if dict.has_key('language'):
+            #    if dict['language'] != 'EN':
+            #        continue
             # 3. For post-season, trim out multi-angle listings
             if self.cfg.get('postseason'):
                 if dict['in_epg'] != 'mlb_multiangle_epg':
@@ -434,7 +434,7 @@ class MediaStream:
                 return 'rtmpdump -o - -r %s' % game_url
         elif self.streamtype == 'classics':
             return 'youtube-dl -o - \'%s\'' % game_url
-        elif self.cfg.get('use_nexdef') and self.streamtype != 'audio':
+        elif self.cfg.get('use_nexdef') and self.streamtype not in ( 'audio', 'alt_audio' ):
             self.nexdef_media_url = game_url
             return self.prepareHlsCmd(game_url)
         else:
@@ -466,7 +466,7 @@ class MediaStream:
         try:
             live_pat = re.compile(r'live\/mlb')
             if re.search(live_pat,game_url):
-                if self.streamtype == 'audio':
+                if self.streamtype in ( 'audio', 'alt_audio' ):
                     auth_pat = re.compile(r'auth=(.*)')
                     self.auth_chunk = '?auth=' + re.search(auth_pat,game_url).groups()[0]
                     live_sub_pat = re.compile(r'live\/mlb_audio(.*)\?')
@@ -516,7 +516,7 @@ class MediaStream:
 
         self.filename = os.path.join(os.environ['HOME'], 'mlbdvr_games')
         self.filename += '/' + str(self.event_id)
-        if self.streamtype == 'audio':
+        if self.streamtype in ( 'audio', 'alt_audio' ):
             self.filename += '.mp3'
         else:
             self.filename += '.mp4'
@@ -576,7 +576,7 @@ class MediaStream:
             rec_cmd_str += ' -n ' + str(self.rtmp_host)
         if self.rtmp_port is not None:
             rec_cmd_str += ' -c ' + str(self.rtmp_port)
-        if self.start_time is not None and self.streamtype != 'audio':
+        if self.start_time is not None and self.streamtype not in ( 'audio', 'alt_audio' ):
             if self.use_nexdef == False:
                 rec_cmd_str += ' -A ' + str(self.start_time)
         self.log.write("\nDEBUG>> rec_cmd_str" + '\n' + rec_cmd_str + '\n\n')
@@ -599,7 +599,7 @@ class MediaStream:
     def preparePlayerCmd(self,media_url,gameid,streamtype='video'):
         if streamtype == 'video':
             player = self.cfg.get('video_player')
-        elif streamtype == 'audio':
+        elif streamtype in ( 'audio', 'alt_audio' ):
             player = self.cfg.get('audio_player')
         elif streamtype in ('highlight', 'condensed', 'classics'):
             player = self.cfg.get('top_plays_player')
@@ -657,7 +657,7 @@ class MediaStream:
         fname = fname.replace('%t',str(self.stream[1]))
         fname = fname.replace('%c',self.stream[2])
         fname = fname.replace('%e',self.stream[3])
-        if self.streamtype == 'audio':
+        if self.streamtype in ( 'audio', 'alt_audio' ):
             suffix = 'mp3'
         else:
             suffix = 'mp4'

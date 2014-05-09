@@ -206,6 +206,7 @@ class MLBSchedule:
     def parseMediaGrid(self,xp,away,home):
         content = {}
         content['audio'] = []
+        content['alt_audio'] = []
         content['video'] = {}
         content['video']['300'] = []
         content['video']['500'] = []
@@ -234,6 +235,14 @@ class MLBSchedule:
                        coverage = home
                    out = (tmp['display'], coverage, tmp['id'], event_id)
                    content['audio'].append(out)
+           elif tmp['type'] in ('alt_home_audio', 'alt_away_audio'):
+               if tmp['playback_scenario'] == 'AUDIO_FMS_32K':
+                   if tmp['type'] == 'alt_away_audio':
+                       coverage = away
+                   elif tmp['type'] == 'alt_home_audio':
+                       coverage = home
+                   out = (tmp['display'], coverage, tmp['id'], event_id)
+                   content['alt_audio'].append(out)
            elif tmp['type'] in ('mlbtv_national', 'mlbtv_home', 'mlbtv_away'):
                if tmp['playback_scenario'] in \
                      ( 'HTTP_CLOUD_WIRED', 'HTTP_CLOUD_WIRED_WEB', 'FMS_CLOUD'):
@@ -376,10 +385,15 @@ class MLBSchedule:
                 except KeyError:
                     dct['video'][key] = None
             dct['audio'] = []
+            dct['alt_audio'] = []
             try:
                 dct['audio'] = game['content']['audio']
             except KeyError:
                 dct['audio'] = None
+            try:
+                dct['alt_audio'] = game['content']['alt_audio']
+            except:
+                dct['alt_audio'] = []
             try:
                 dct['condensed'] = game['content']['condensed']
             except KeyError:
@@ -478,6 +492,7 @@ class MLBSchedule:
         media  = {}
         media['video'] = {}
         media['audio'] = {}
+        media['alt_audio'] = {}
         home = available[0]['home']
 	away = available[0]['away']
         homecode = TEAMCODES[home][0]
@@ -502,8 +517,18 @@ class MLBSchedule:
                 # handle game of the week
                 media['audio']['home'] = elem
                 media['audio']['away'] = elem
+        # once more for alt_audio
+        for elem in available[10]:
+            if homecode and homecode in elem[1]:
+                media['alt_audio']['home'] = elem
+            elif awaycode and awaycode in elem[1]:
+                media['alt_audio']['away'] = elem
+            else:
+                # handle game of the week
+                media['alt_audio']['home'] = elem
+                media['alt_audio']['away'] = elem
         # now build dictionary based on coverage and follow settings
-        for type in ('audio' , 'video'):
+        for type in ('audio' , 'video', 'alt_audio' ):
             follow='%s_follow'%type
             # if home is in follow and stream available, use it, elif away, else
             # None
@@ -533,8 +558,12 @@ class MLBSchedule:
                     try:
                         if type == 'video':
                             prefer[type] = available[2][0]
-                        else:
+                        elif type == 'audio':
                             prefer[type] = available[3][0]
+                        else:
+                            # since alternate audio is often in another language,
+                            # don't just pick a value.
+                            prefer[type] = None
                     except:
                         prefer[type] = None
         return prefer
@@ -589,7 +618,8 @@ class MLBSchedule:
                      elem[0],
                      elem[1]['media_state'],
                      elem[1]['start_time'],
-                     elem[1]['free'])\
+                     elem[1]['free'],
+                     elem[1]['alt_audio'])\
                          for elem in listings]
 
 

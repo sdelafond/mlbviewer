@@ -75,6 +75,8 @@ class MLBMediaDetailWin(MLBListWin):
             home_video=game['media']['video']['home']
             away_audio=game['media']['audio']['away']
             home_audio=game['media']['audio']['home']
+            alt_away_audio=game['media']['alt_audio']['away']
+            alt_home_audio=game['media']['alt_audio']['home']
             away_vidstr = ("(No Video)",away_video[0])[len(away_video)>0]
             home_vidstr = ("(No Video)",home_video[0])[len(home_video)>0]
             away_audstr = ("(No Audio)",away_audio[0])[len(away_audio)>0]
@@ -84,16 +86,18 @@ class MLBMediaDetailWin(MLBListWin):
             mediaflags = "%s%s" % ( cg_str, archive_str )
             away_substr1 = "%3s | [Video] %s" % \
                 ( game['away'].upper(), away_vidstr )
-            away_substr2 = "%3s | [Audio] %s" % \
+            away_substr2 = "%3s | [Audio] %-5s" % \
                 ( "", away_audstr )
-            #away_str = "%10s%25s%25s%10s" % ( status, away_substr1, away_substr2, mediaflags )
-            away_str = "%10s   %-25s %-25s   %7s" % ( status, away_substr1, away_substr2, mediaflags )
+            if len(alt_away_audio):
+                away_substr2 += "  Alt: " + alt_away_audio[0]
+            away_str = "%10s   %-23s %-30s   %6s" % ( status, away_substr1, away_substr2, mediaflags )
             home_substr1 = "%3s | [Video] %s" % \
                 ( game['home'].upper(), home_vidstr )
-            home_substr2 = "%3s | [Audio] %s" % \
+            home_substr2 = "%3s | [Audio] %-5s" % \
                 ( "", home_audstr )
-            #home_str = "%10s%25s%25s" % ( starttime, home_substr1, home_substr2 )
-            home_str = "%10s   %-25s %-25s" % ( starttime, home_substr1, home_substr2 )
+            if len(alt_home_audio):
+                home_substr2 += "  Alt: " + alt_home_audio[0]
+            home_str = "%10s   %-23s %-30s" % ( starttime, home_substr1, home_substr2 )
             self.data.append(away_str)
             self.data.append(home_str)
         return self.data
@@ -175,7 +179,10 @@ class MLBMediaDetailWin(MLBListWin):
                 if home in self.mycfg.get('favorite') or \
                    away in self.mycfg.get('favorite'):
                     if self.mycfg.get('use_color'):
-                        cursesflags |= curses.color_pair(1)
+                        cursesflags |= curses.color_pair(COLOR_FAVORITE)
+                elif self.games[game_cursor]['free']:
+                    if self.mycfg.get('use_color'):
+                        cursesflags |= curses.color_pair(COLOR_FREE)
                 self.myscr.addnstr(n+2,0,s,curses.COLS-2,cursesflags)
             else:
                 s = ' '*(curses.COLS-1)
