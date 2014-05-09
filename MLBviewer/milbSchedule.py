@@ -9,14 +9,8 @@ import json
 
 from mlbConstants import *
 from mlbError import *
+from mlbGameTime import MLBGameTime
 
-def gameTimeConvert(listdate, time_shift=None):
-    etoffset=datetime.timedelta(0,(18000,14400)[time.daylight])
-    utcdate=listdate + etoffset
-    myzone=(time.timezone,time.altzone)[time.daylight]
-    localoffset = datetime.timedelta(0,myzone)
-    localtime=utcdate-localoffset
-    return localtime
 
 class MiLBSchedule:
 
@@ -66,7 +60,8 @@ class MiLBSchedule:
             listdate=datetime.datetime.strptime('%s %s' %\
                                                    ( event_time,self.ymd_str ),
                                                    '%I:%M %p %Y%m%d')
-            localdate = gameTimeConvert(listdate)
+            gametime=MLBGameTime(listdate,self.shift)
+            localdate = gametime.localize()
             gameinfo[id]['local_datetime'] = localdate
             gameinfo[id]['event_time'] = localdate
             gameinfo[id]['local_time'] = localdate.strftime('%I:%M %p')

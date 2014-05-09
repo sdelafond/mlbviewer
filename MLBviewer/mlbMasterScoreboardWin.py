@@ -4,7 +4,6 @@ from mlbConstants import *
 from mlbListWin import MLBListWin
 from mlbMasterScoreboard import MLBMasterScoreboard
 from mlbError import *
-from mlbSchedule import gameTimeConvert
 from mlbGameTime import MLBGameTime
 import datetime
 import curses
@@ -140,7 +139,6 @@ class MLBMasterScoreboardWin(MLBListWin):
         gt = datetime.datetime.strptime('%s %s'%(gametime, ampm),'%I:%M %p')
         now = datetime.datetime.now()
         gt = gt.replace(year=now.year, month=now.month, day=now.day)
-        #lt = gameTimeConvert(gt)
         gametime=MLBGameTime(gt,self.mycfg.get('time_offset'))
         lt=gametime.localize()
         time_str = lt.strftime('%I:%M %p')

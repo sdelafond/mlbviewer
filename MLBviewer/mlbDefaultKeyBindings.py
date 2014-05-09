@@ -13,7 +13,7 @@ DEFAULT_KEYBINDINGS = {
     'HELP'               : [ ord('h') ],
     'JUMP'               : [ ord('j') ],
     'MEDIA_DEBUG'        : [ ord('z') ],
-    'MEDIA_DETAIL'       : [ ord('I') ],
+    'MEDIA_DETAIL'       : [ ord('I'), ord('e') ],
     'OPTIONS'            : [ ord('o') ],
     'LINE_SCORE'         : [ ord('b') ],
     'BOX_SCORE'          : [ ord('x') ],

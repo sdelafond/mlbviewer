@@ -4,7 +4,7 @@ from mlbListWin import MLBListWin
 from mlbStandings import MLBStandings
 import curses
 from datetime import datetime
-from mlbSchedule import gameTimeConvert
+from mlbGameTime import MLBGameTime
 
 class MLBStandingsWin(MLBListWin):
 
@@ -95,7 +95,8 @@ class MLBStandingsWin(MLBListWin):
             titlestr = "STANDINGS NOT AVAILABLE"
         else:
             upd = datetime.strptime(self.last_update, "%Y-%m-%dT%H:%M:%S-04:00")
-            update_datetime = gameTimeConvert(upd)
+            gametime=MLBGameTime(upd,self.mycfg.get('time_offset'))
+            update_datetime = gametime.localize()
             update_str = update_datetime.strftime('%Y-%m-%d %H:%M:%S')
             titlestr = "STANDINGS: Last updated: %s" % update_str
             #titlestr += " (updates only once a day)"

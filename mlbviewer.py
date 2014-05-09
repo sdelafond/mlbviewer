@@ -142,6 +142,7 @@ def mainloop(myscr,mycfg,mykeys):
     stdwin = None
     calwin = None
     statwin = None
+    detailwin = None
     stats = MLBStats(mycfg)
     # initialize some variables to re-use for 304 caching
     boxscore = None
@@ -228,7 +229,7 @@ def mainloop(myscr,mycfg,mykeys):
                 (mywin.current_cursor,mywin.record_cursor,curses.LINES-4,len(mywin.records),len(mywin.data) )
         mywin.titleRefresh(mysched)
         mywin.statusRefresh()
-        if mywin in ( listwin, sbwin ):
+        if mywin in ( listwin, sbwin, detailwin ):
             try:
                 prefer = mysched.getPreferred(
                     listwin.records[listwin.current_cursor], mycfg)
@@ -299,12 +300,12 @@ def mainloop(myscr,mycfg,mykeys):
 
         # NAVIGATION
         if c in mykeys.get('UP'):
-            if mywin in ( sbwin , ):
+            if mywin in ( sbwin , detailwin ):
                 listwin.Up()
             mywin.Up()
         
         if c in mykeys.get('DOWN'):
-            if mywin in ( sbwin , ):
+            if mywin in ( sbwin , detailwin ):
                 listwin.Down()
             mywin.Down()
 
@@ -425,9 +426,9 @@ def mainloop(myscr,mycfg,mykeys):
             
 
         if c in mykeys.get('LEFT') or c in mykeys.get('RIGHT'):
-            if mywin not in ( listwin, sbwin, linewin, calwin ):
+            if mywin not in ( listwin, sbwin, linewin, calwin, detailwin ):
                 continue
-            if mywin in ( listwin, sbwin, calwin ):
+            if mywin in ( listwin, sbwin, calwin, detailwin ):
                 listwin.statusWrite('Refreshing listings...')
             # handle linescore separately - this is for scrolling through 
             # extra innings - calendar navigation is also different
@@ -472,6 +473,15 @@ def mainloop(myscr,mycfg,mykeys):
                 sbwin.setCursors(listwin.record_cursor, 
                                  listwin.current_cursor)
                 mywin = sbwin
+            elif mywin in ( detailwin, ):
+                game=listwin.records[listwin.current_cursor]
+                gameid=game[6]
+                detail = MLBMediaDetail(mycfg,listwin.data)
+                games = detail.parseListings()
+                detailwin = MLBMediaDetailWin(myscr,mycfg,gameid,games)
+                detailwin.getMediaDetail(gameid)
+                mywin = detailwin
+                listwin.PgUp()
 
         # DEBUG : NEEDS ATTENTION FOR SCROLLING
         if c in mykeys.get('MEDIA_DEBUG'):
@@ -517,7 +527,7 @@ def mainloop(myscr,mycfg,mykeys):
                                        curses.COLS-2)
             mywin.titlewin.hline(1, 0, curses.ACS_HLINE, curses.COLS-1)
             myscr.addnstr(2,0,'getListings() for current_cursor:',curses.COLS-2)
-            if mywin in ( sbwin , boxwin ):
+            if mywin in ( sbwin , boxwin, detailwin ):
                 myscr.addstr(3,0,repr(listwin.records[listwin.current_cursor]))
             elif mywin in ( calwin, ):
                 myscr.addnstr(3,0,repr(calwin.gamedata[calwin.game_cursor]),
@@ -536,37 +546,13 @@ def mainloop(myscr,mycfg,mykeys):
         # MEDIA DETAIL
         if c in mykeys.get('MEDIA_DETAIL'):
             game=listwin.records[listwin.current_cursor]
-            home=game[0]['home']
-            away=game[0]['away']
-            start=game[1]
-            starttime=start.strftime('%H:%M')
-            media=dict()
-            media['video'] = dict()
-            media['audio'] = dict()
-            ( media['video']['home'], media['video']['away'] ) = game[2]
-            ( media['audio']['home'], media['audio']['away'] ) = game[3]
             gameid=game[6]
-            myscr.clear()
-            mywin.titlewin.clear()
-            mywin.titlewin.addnstr(0,0,'MEDIA_DETAIL FOR %s @ %s' % \
-                          ( TEAMCODES[away][1], TEAMCODES[home][1] ),
-                                       curses.COLS-2)
-            mywin.titlewin.hline(1, 0, curses.ACS_HLINE, curses.COLS-1)
-            myscr.addnstr(2,0,"%3s : [V] %s" % \
-                          ( away.upper() , media['video']['away'][0] ),
-                          curses.COLS-2 )
-            myscr.addnstr(2,20,"%3s : [A] %s" % \
-                          ( "" , media['audio']['away'][0] ),
-                          curses.COLS-2 )
-            myscr.addnstr(3,0,"%3s : [V] %s" % \
-                          ( home.upper() , media['video']['home'][0] ),
-                          curses.COLS-2 )
-            myscr.addnstr(3,20,"%3s : [A] %s" % \
-                          ( "" , media['audio']['home'][0] ),
-                          curses.COLS-2 )
-            myscr.refresh()
-            mywin.titlewin.refresh()
-            mywin.statusWrite('Press a key to continue...',wait=-1)
+            detail = MLBMediaDetail(mycfg,listwin.data)
+            games = detail.parseListings()
+            detailwin = MLBMediaDetailWin(myscr,mycfg,gameid,games)
+            detailwin.getMediaDetail(gameid)
+            mywin = detailwin
+            listwin.PgUp()
 
         # SCREENS - NEEDS WORK FOR SCROLLING
         if c in mykeys.get('HELP'):
@@ -988,7 +974,7 @@ def mainloop(myscr,mycfg,mykeys):
 
         # TOGGLES
         if c in mykeys.get('NEXDEF'):
-            if mywin not in ( listwin, sbwin ):
+            if mywin not in ( listwin, sbwin, detailwin ):
                 continue
             if mycfg.get('milbtv'):
                 continue
@@ -999,7 +985,7 @@ def mainloop(myscr,mycfg,mykeys):
                 mycfg.set('use_nexdef', True)
 
         if c in mykeys.get('COVERAGE'):
-            if mywin not in ( listwin, sbwin ):
+            if mywin not in ( listwin, sbwin, detailwin ):
                 continue
             if mycfg.get('milbtv'):
                 continue
@@ -1011,7 +997,7 @@ def mainloop(myscr,mycfg,mykeys):
             del temp
 
         if c in mykeys.get('SPEED'):
-            if mywin not in ( listwin, sbwin ):
+            if mywin not in ( listwin, sbwin, detailwin ):
                 continue
             if mycfg.get('milbtv'):
                 continue

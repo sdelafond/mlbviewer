@@ -4,7 +4,7 @@ from mlbListWin import MLBListWin
 from mlbStats import MLBStats
 import curses
 from datetime import datetime
-from mlbSchedule import gameTimeConvert
+from mlbGameTime import MLBGameTime
 from mlbConstants import *
 
 class MLBStatsWin(MLBListWin):
@@ -183,7 +183,8 @@ class MLBStatsWin(MLBListWin):
                 upd = datetime.strptime(self.last_update, "%Y-%m-%dT%H:%M:%S-04:00")
             except:
                 upd = datetime.strptime(self.last_update, "%Y-%m-%dT%H:%M:%S")
-            update_datetime = gameTimeConvert(upd)
+            gametime=MLBGameTime(upd,self.mycfg.get('time_offset'))
+            update_datetime = gametime.localize()
             update_str = update_datetime.strftime('%Y-%m-%d %H:%M:%S')
             self.type = self.mycfg.get('stat_type')
             type = self.type.upper()
@@ -224,7 +225,8 @@ class MLBStatsWin(MLBListWin):
             upd = datetime.strptime(self.last_update, "%Y-%m-%dT%H:%M:%S-04:00")
         except:
             upd = datetime.strptime(self.last_update, "%Y-%m-%dT%H:%M:%S")
-        update_datetime = gameTimeConvert(upd)
+        gametime=MLBGameTime(upd,self.mycfg.get('time_offset'))
+        update_datetime = gametime.localize()
         update_str = update_datetime.strftime('%Y-%m-%d %H:%M:%S')
         status_str = "Last Updated: %s" % update_str
         if self.mycfg.get('season_type') == 'ANY':
