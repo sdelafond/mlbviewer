@@ -59,9 +59,9 @@ class MLBStats:
 
     def prepareTripleCrownUrl(self):
         if self.type == 'pitching':
-            self.url = 'http://mlb.mlb.com/lookup/json/named.leader_pitching_repeater.bam?results=5&season=2013&game_type=%27R%27&leader_pitching_repeater.col_in=era&leader_pitching_repeater.col_in=w&leader_pitching_repeater.col_in=so&leader_pitching_repeater.col_in=name_last&leader_pitching_repeater.col_in=team_abbrev&leader_pitching_repeater.col_in=player_id&sort_column=%27era%27&sort_column=%27w%27&sort_column=%27so%27&sport_code=%27mlb%27'
+            self.url = 'http://mlb.mlb.com/lookup/json/named.leader_pitching_repeater.bam?results=5&season=2014&game_type=%27R%27&leader_pitching_repeater.col_in=era&leader_pitching_repeater.col_in=w&leader_pitching_repeater.col_in=so&leader_pitching_repeater.col_in=name_last&leader_pitching_repeater.col_in=team_abbrev&leader_pitching_repeater.col_in=player_id&sort_column=%27era%27&sort_column=%27w%27&sort_column=%27so%27&sport_code=%27mlb%27'
         else:
-            self.url = 'http://mlb.mlb.com/lookup/json/named.leader_hitting_repeater.bam?results=5&season=2013&game_type=%27R%27&leader_hitting_repeater.col_in=avg&leader_hitting_repeater.col_in=hr&leader_hitting_repeater.col_in=rbi&leader_hitting_repeater.col_in=name_last&leader_hitting_repeater.col_in=team_abbrev&leader_hitting_repeater.col_in=player_id&sort_column=%27avg%27&sort_column=%27hr%27&sort_column=%27rbi%27&sport_code=%27mlb%27'
+            self.url = 'http://mlb.mlb.com/lookup/json/named.leader_hitting_repeater.bam?results=5&season=2014&game_type=%27R%27&leader_hitting_repeater.col_in=avg&leader_hitting_repeater.col_in=hr&leader_hitting_repeater.col_in=rbi&leader_hitting_repeater.col_in=name_last&leader_hitting_repeater.col_in=team_abbrev&leader_hitting_repeater.col_in=player_id&sort_column=%27avg%27&sort_column=%27hr%27&sort_column=%27rbi%27&sport_code=%27mlb%27'
 
     def preparePlayerUrl(self):
         self.url = 'http://mlb.mlb.com/lookup/json/named.sport_%s_composed.bam?' % self.type

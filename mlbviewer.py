@@ -1123,7 +1123,7 @@ def mainloop(myscr,mycfg,mykeys):
                     mywin.statusWrite('Could not get preferred media for %s' %\
                                        GAMEID,wait=2)
                     continue
-            if c in mykeys.get('AUDIO') or mykeys.get('ALT_AUDIO'):
+            if c in mykeys.get('AUDIO') or c in mykeys.get('ALT_AUDIO'):
                 if mywin == topwin:
                     listwin.statusWrite(UNSUPPORTED,wait=2)
                     continue
@@ -1132,7 +1132,6 @@ def mainloop(myscr,mycfg,mykeys):
                 else:
                     streamtype = 'audio'
             elif c in mykeys.get('CONDENSED_GAME'):
-                #mywin.statusWrite('Retrieving requested media...')
                 streamtype = 'condensed'
                 try:
                     prefer[streamtype] = listwin.records[listwin.current_cursor][4][0]
