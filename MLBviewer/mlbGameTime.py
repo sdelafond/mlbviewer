@@ -23,6 +23,9 @@ class MLBGameTime:
     def __init__(self,listtime,shift=None):
         self.eastern = listtime
         self.shift = shift
+        # defensive code to ignore old format without the ":"
+        if self.shift and not re.search(":",self.shift):
+            self.shift=None
 
     def dst(self):
         dststart, dstend = DSTSTART, DSTEND
