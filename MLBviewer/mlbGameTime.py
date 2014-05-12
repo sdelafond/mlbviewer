@@ -8,6 +8,7 @@ import re
 # In the US, since 2007, DST starts at 2am (standard time) on the second
 # Sunday in March, which is the first Sunday on or after Mar 8.
 DSTSTART = datetime.datetime(1, 3, 8, 2)
+
 # and ends at 2am (DST time; 1am standard time) on the first Sunday of Nov.
 DSTEND = datetime.datetime(1, 11, 1, 1)
 
