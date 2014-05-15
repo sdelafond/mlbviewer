@@ -71,12 +71,20 @@ class MLBMediaDetailWin(MLBListWin):
             status = game['status']
             start = game['starttime']
             starttime = start.strftime('%I:%M %p')
-            away_video=game['media']['video']['away']
-            home_video=game['media']['video']['home']
-            away_audio=game['media']['audio']['away']
-            home_audio=game['media']['audio']['home']
-            alt_away_audio=game['media']['alt_audio']['away']
-            alt_home_audio=game['media']['alt_audio']['home']
+            if status in ( 'Postponed', 'Cancelled' ):
+                home_video=("(None)",)
+                away_video=("(None)",)
+                home_audio=("(None)",)
+                away_audio=("(None)",)
+                alt_home_audio=[]
+                alt_away_audio=[]
+            else:
+                away_video=game['media']['video']['away']
+                home_video=game['media']['video']['home']
+                away_audio=game['media']['audio']['away']
+                home_audio=game['media']['audio']['home']
+                alt_away_audio=game['media']['alt_audio']['away']
+                alt_home_audio=game['media']['alt_audio']['home']
             away_vidstr = ("(No Video)",away_video[0])[len(away_video)>0]
             home_vidstr = ("(No Video)",home_video[0])[len(home_video)>0]
             away_audstr = ("(No Audio)",away_audio[0])[len(away_audio)>0]
