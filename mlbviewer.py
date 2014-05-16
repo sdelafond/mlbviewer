@@ -208,7 +208,7 @@ def mainloop(myscr,mycfg,mykeys):
             favorite=mycfg.get('favorite')
             for f in favorite:
                 for follow in ( 'audio_follow', 'video_follow' ):
-                    if f not in mycfg.get(follow):
+                    if f not in mycfg.get(follow) and not mycfg.get('disable_favorite_follow'):
                         mycfg.set(follow, f)
             mywin.focusFavorite()
         except IndexError:
