@@ -228,7 +228,8 @@ def mainloop(myscr,mycfg,mykeys):
             raise Exception,"current_cursor=%s, record_cursor=%s, cl-4=%s, lr=%s,ld=%s" %\
                 (mywin.current_cursor,mywin.record_cursor,curses.LINES-4,len(mywin.records),len(mywin.data) )
         mywin.titleRefresh(mysched)
-        mywin.statusRefresh()
+        #pass prefer to statusRefresh but first work it out
+        #mywin.statusRefresh()
         if mywin in ( listwin, sbwin, detailwin ):
             try:
                 prefer = mysched.getPreferred(
@@ -242,6 +243,10 @@ def mainloop(myscr,mycfg,mykeys):
                 prefer['video'] = mywin.records[mywin.current_cursor][2] 
             except:
                 prefer['video'] = None
+        if mywin in ( detailwin, ):
+            mywin.statusRefresh(prefer=prefer)
+        else:
+            mywin.statusRefresh()
 
         # And now we do input.
         try:

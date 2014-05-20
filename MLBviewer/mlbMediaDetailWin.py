@@ -214,27 +214,19 @@ class MLBMediaDetailWin(MLBListWin):
         self.titlewin.hline(1, 0, curses.ACS_HLINE, curses.COLS-1)
         self.titlewin.refresh()
 
-    def statusRefresh(self):
+    def statusRefresh(self,prefer):
         if len(self.games) == 0:
             self.statuswin.addnstr(0,0,'No listings available for this day.',
                                        curses.COLS-2)
             self.statuswin.refresh()
             return
         game_cursor = ( self.current_cursor + self.record_cursor ) / 2
-        # BEGIN curses debug code
-        if self.mycfg.get('curses_debug'):
-            wlen=curses.LINES-4
-            if wlen % 2 > 0:
-                wlen -= 1
-            status_str = "game_cursor=%s, wlen=%s, current_cursor=%s, record_cursor=%s, len(records)=%s" %\
-                      ( game_cursor, wlen, self.current_cursor, self.record_cursor, len(self.records) )
-            self.statuswin.clear()
-            self.statuswin.addnstr(0,0,status_str,curses.COLS-2,curses.A_BOLD)
-            self.statuswin.refresh()
-            return
-        # END curses debug code
-        status = self.games[game_cursor]['statustext']
-        status_str = status
+        #status = self.games[game_cursor]['statustext']
+        #status_str = status
+        status_str = "[Video] %-8s" % prefer['video'][0]
+        status_str += " [Audio] %-8s" % prefer['audio'][0]
+        if prefer['alt_audio'] is not None:
+            status_str += " [Alt Audio] %-8s" % prefer['alt_audio'][0]
         speedstr = SPEEDTOGGLE.get(self.mycfg.get('speed'))
         hdstr = SSTOGGLE.get(self.mycfg.get('adaptive_stream'))
         coveragestr = COVERAGETOGGLE.get(self.mycfg.get('coverage'))
