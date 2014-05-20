@@ -223,8 +223,13 @@ class MLBMediaDetailWin(MLBListWin):
         game_cursor = ( self.current_cursor + self.record_cursor ) / 2
         #status = self.games[game_cursor]['statustext']
         #status_str = status
-        status_str = "[Video] %-8s" % prefer['video'][0]
-        status_str += " [Audio] %-8s" % prefer['audio'][0]
+        status_str = ""
+        for media in ( 'video', 'audio' ):
+            if prefer[media] is not None:
+                media_str = prefer[media][0]
+            else:
+                media_str = "(None)"
+            status_str += "[%s] %-8s" % ( media.capitalize(), media_str )
         if prefer['alt_audio'] is not None:
             status_str += " [Alt Audio] %-8s" % prefer['alt_audio'][0]
         speedstr = SPEEDTOGGLE.get(self.mycfg.get('speed'))
