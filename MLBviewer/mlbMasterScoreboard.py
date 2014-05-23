@@ -46,18 +46,26 @@ class MLBMasterScoreboard:
             tmp[gid] = dict()
             tmp[gid] = self.parseGameData(game)
             try:
+                for media in game.getElementsByTagName('media'):
+                    free = media.getAttribute('free')
+                    tmp[gid]['free'] = (False,True)[free=="ALL"]
+            except:
+                tmp[gid]['free'] = False
+            try:
                 tmp[gid]['totals'] = self.parseLineScore(game)
             except:
                 tmp['totals'] = None
             status = tmp[gid]['status']
             if status in ('Final', 'Game Over', 'Completed Early'):
                 tmp[gid]['pitchers'] = self.parseWinLossPitchers(game)
-            elif status in ( 'In Progress', 'Delayed', 'Suspended', 'Replay' ):
+            elif status in ( 'In Progress', 'Delayed', 'Suspended', 
+                             'Manager Challenge', 'Replay' ):
                 tmp[gid]['pitchers'] = self.parseCurrentPitchers(game)
             else:
                 tmp[gid]['pitchers'] = self.parseProbablePitchers(game)
             if tmp[gid]['status'] in ( 'In Progress', 'Delayed', 'Suspended',
                                                  'Replay',
+                                                 'Manager Challenge',
                                                  'Completed Early',
                                                  'Game Over',
                                                  'Final' ):
@@ -65,6 +73,7 @@ class MLBMasterScoreboard:
                 tmp[gid]['hr'] = self.parseHrData(game)
                 if tmp[gid]['status'] in ( 'In Progress', 'Delayed', 
                                            'Replay',
+                                           'Manager Challenge',
                                            'Suspended' ):
                     tmp[gid]['in_game'] = dict()
                     tmp[gid]['in_game'] = self.parseInGameData(game)

@@ -74,7 +74,8 @@ class MLBMasterScoreboardWin(MLBListWin):
         for game in self.sb:
             gid = game.keys()[0]
             status = game[gid]['status']
-            if status in ( 'In Progress', 'Delayed', 'Suspended', 'Replay' ):
+            if status in ( 'In Progress', 'Delayed', 'Suspended', 
+                           'Manager Challenge', 'Replay' ):
                 self.parseInGameData(game)
             elif status in ( 'Game Over' , 'Final', 'Completed Early' ):
                 self.parseFinalGameData(game)
@@ -283,6 +284,11 @@ class MLBMasterScoreboardWin(MLBListWin):
         if len(self.sb) == 0:
             self.myscr.refresh()
             return
+        division = []
+        for fave in self.mycfg.get('favorite'):
+            for div in STANDINGS_DIVISIONS_TEAMS:
+                if int(TEAMCODES[fave][0]) in STANDINGS_DIVISIONS_TEAMS[div]:
+                    division = STANDINGS_DIVISIONS_TEAMS[div]
         for n in range(wlen):
             if n < len(self.records):
                 s = self.records[n]
@@ -292,6 +298,7 @@ class MLBMasterScoreboardWin(MLBListWin):
                 home = self.sb[game_cursor][gid]['home_file_code']
                 away = self.sb[game_cursor][gid]['away_file_code']
                 status = self.sb[game_cursor][gid]['status']
+                free = self.sb[game_cursor][gid]['free']
                 if n % 2 > 0:
                     # second line of the game, underline it for division
                     # between games
@@ -301,7 +308,8 @@ class MLBMasterScoreboardWin(MLBListWin):
                         cursesflags |= curses.A_UNDERLINE|curses.A_REVERSE
                     else:
                         cursesflags = curses.A_UNDERLINE
-                    if status in ( 'In Progress', 'Replay' ):
+                    if status in ( 'In Progress', 'Replay',
+                                   'Manager Challenge' ):
                         cursesflags |= cursesflags | curses.A_BOLD
                 else:
                     pad = curses.COLS -1 - len(self.records[n])
@@ -310,12 +318,21 @@ class MLBMasterScoreboardWin(MLBListWin):
                         cursesflags |= curses.A_REVERSE
                     else:
                         cursesflags = 0
-                    if status in ( 'In Progress', 'Replay' ):
+                    if status in ( 'In Progress', 'Replay',
+                                   'Manager Challenge' ):
                         cursesflags |= cursesflags | curses.A_BOLD
                 if home in self.mycfg.get('favorite') or \
                    away in self.mycfg.get('favorite'):
                     if self.mycfg.get('use_color'):
-                        cursesflags |= curses.color_pair(1)
+                        cursesflags |= curses.color_pair(COLOR_FAVORITE)
+                elif free and self.mycfg.get('use_color'):
+                    cursesflags |= curses.color_pair(COLOR_FREE)
+                elif int(TEAMCODES[home][0]) in division or \
+                     int(TEAMCODES[away][0]) in division:
+                     if self.mycfg.get('use_color') and \
+                        self.mycfg.get('highlight_division'):
+                         cursesflags |= curses.color_pair(COLOR_DIVISION)
+                
                 self.myscr.addnstr(n+2,0,s,curses.COLS-2,cursesflags)
             else:
                 s = ' '*(curses.COLS-1)

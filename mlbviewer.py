@@ -117,6 +117,9 @@ def mainloop(myscr,mycfg,mykeys):
                     curses.init_pair(COLOR_FREE, 
                                      COLORS[mycfg.get('free_color')],
                                      COLORS[mycfg.get('bg_color')])
+                    curses.init_pair(COLOR_DIVISION,
+                                     COLORS[mycfg.get('division_color')],
+                                     COLORS[mycfg.get('bg_color')])
                 except KeyError:
                     mycfg.set('use_color', False)
                     curses.init_pair(1, -1, -1)
@@ -999,6 +1002,10 @@ def mainloop(myscr,mycfg,mykeys):
                 listwin.focusFavorite()
 
         # TOGGLES
+        if c in mykeys.get('DIVISION'):
+            val=(True,False)[mycfg.get('highlight_division')]
+            mycfg.set('highlight_division',val)
+
         if c in mykeys.get('NEXDEF'):
             if mywin not in ( listwin, sbwin, detailwin ):
                 continue
@@ -1264,6 +1271,8 @@ if __name__ == "__main__":
                   'use_color': 1,
                   'favorite_color': 'cyan',
                   'free_color': 'green',
+                  'division_color' : 'red',
+                  'highlight_division' : 0,
                   'bg_color': 'xterm',
                   'show_player_command': 0,
                   'debug': 0,

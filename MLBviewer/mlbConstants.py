@@ -320,6 +320,7 @@ COLORS = { 'black'   : curses.COLOR_BLACK,
 # used for color pairs
 COLOR_FAVORITE = 1
 COLOR_FREE = 2
+COLOR_DIVISION = 3
 
 STATUSLINE = {
         "E" : "Status: Completed Early",
@@ -389,6 +390,15 @@ STANDINGS_JSON_DIVISIONS = {
     '204' : 'NL East',
     '205' : 'NL Central',
     '203' : 'NL West',
+}
+
+STANDINGS_DIVISIONS_TEAMS = {
+    '201' : ( 141, 147, 110, 111, 139 ), 
+    '202' : ( 142, 118, 116, 145, 114 ), 
+    '200' : ( 133, 108, 117, 140, 136 ),
+    '204' : ( 144, 146, 120, 121, 143 ),
+    '205' : ( 158, 138, 113, 112, 134 ),
+    '203' : ( 137, 119, 115, 109, 135 ),
 }
 
 

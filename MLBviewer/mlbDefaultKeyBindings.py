@@ -37,4 +37,5 @@ DEFAULT_KEYBINDINGS = {
     'MILBTV'             : [ ord('M') ],
     'POSTSEASON'         : [ ord('P') ],
     'CALENDAR'           : [ ord('C') ],
+    'DIVISION'           : [ ord('D') ],
 }
