@@ -298,7 +298,10 @@ class MLBMasterScoreboardWin(MLBListWin):
                 home = self.sb[game_cursor][gid]['home_file_code']
                 away = self.sb[game_cursor][gid]['away_file_code']
                 status = self.sb[game_cursor][gid]['status']
-                free = self.sb[game_cursor][gid]['free']
+                try:
+                    free = self.sb[game_cursor][gid]['free']
+                except:
+                    free = False
                 if n % 2 > 0:
                     # second line of the game, underline it for division
                     # between games
