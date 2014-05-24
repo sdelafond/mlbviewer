@@ -47,8 +47,12 @@ class MLBMasterScoreboard:
             tmp[gid] = self.parseGameData(game)
             try:
                 for media in game.getElementsByTagName('media'):
-                    free = media.getAttribute('free')
-                    tmp[gid]['free'] = (False,True)[free=="ALL"]
+                    type = media.getAttribute('type')
+                    if type == "game":
+                        free = media.getAttribute('free')
+                        tmp[gid]['free'] = (False,True)[free=="ALL"]
+                if not tmp[gid].has_key('free'):
+                    tmp[gid]['free'] = False
             except:
                 tmp[gid]['free'] = False
             try:
