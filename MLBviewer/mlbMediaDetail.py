@@ -61,8 +61,6 @@ class MLBMediaDetail:
                     if game[2][0][1] == '0':
                         gamedata['media']['video']['home'] = game[2][0]
                         gamedata['media']['video']['away'] = ("(None)",)
-                    #gamedata['media']['video']['home'] = game[2][0]
-                    #gamedata['media']['video']['away'] = game[2][0]
             try:
                 ( gamedata['media']['audio']['home'],  \
                   gamedata['media']['audio']['away'] ) = game[3]

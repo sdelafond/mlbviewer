@@ -17,7 +17,7 @@ import urllib
 import urllib2
 import re
 import time
-import datetime
+from datetime import datetime
 import cookielib
 
 import os
@@ -47,8 +47,9 @@ class MLBLog:
         pass
     
     def write(self,logmsg):
+        ts=datetime.now().strftime('%m/%d %H:%M | ')
         if self.log is None:
             self.open()
-        self.log.write(logmsg)
+        self.log.write(ts + logmsg + '\n')
         self.close()
 

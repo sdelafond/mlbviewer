@@ -66,27 +66,28 @@ class MLBSession:
         if COOKIE_DEBUG:
             self.debug = True
         self.log = MLBLog(LOGFILE)
+        self.log.write('MLBSession BEGIN')
         try:
             self.session_key = self.readSessionKey()
-            if self.debug:
-                self.log.write("LOGIN> Read session key from file: " + str(self.session_key))
+            self.log.write('init() session-key : ' + self.session_key)
         except:
+            #raise
+            self.log.write('init() session-key : None')
             self.session_key = None
 
     def readSessionKey(self):
         sk = open(SESSIONKEY,"r")
         self.session_key = sk.read()
         sk.close()
-        return session_key
+        return self.session_key
 
     def writeSessionKey(self,session_key):
-        if self.debug:
-            self.log.write('Writing session-key to file: ' + str(self.session_key) + '\n')
-        self.log.write('Writing session-key to file: ' + str(self.session_key) + '\n')
+        self.session_key = session_key
+        self.log.write('writeSessionKey(): ' + str(self.session_key))
         sk = open(SESSIONKEY,"w")
-        sk.write(session_key)
+        sk.write(self.session_key)
         sk.close()
-        return session_key
+        return self.session_key
 
     def extractCookies(self):
         for c in self.cookie_jar:
@@ -94,12 +95,10 @@ class MLBSession:
         self.printCookies()
 
     def printCookies(self):
-        if self.debug:
-            self.log.write('Printing relevant cookie morsels...\n')
-            for name in self.cookies.keys():
-                if name in ('fprt', 'ftmu', 'ipid'):
-                    self.log.write(str(name) + ' = ' + str(self.cookies[name]))
-                    self.log.write('\n')
+        self.log.write('printCookies() : ')
+        for name in self.cookies.keys():
+            if name in ('fprt', 'ftmu', 'ipid'):
+                self.log.write(str(name) + ' = ' + str(self.cookies[name]))
 
     def readCookieFile(self):
         self.cookie_jar = cookielib.LWPCookieJar()
@@ -159,7 +158,7 @@ class MLBSession:
             raise Exception, self.error_str
         try:
             if self.debug:
-                self.log.write('pre-login:\n')
+                self.log.write('pre-login:')
             self.extractCookies()
         except Exception,detail:
             raise Exception,detail
@@ -187,7 +186,7 @@ class MLBSession:
             handle = urllib2.urlopen(req)
             self.cookie_jar.save(COOKIEFILE,ignore_discard=IGNORE_DISCARD)
             if self.debug:
-                self.log.write('post-login: (this gets saved to file)\n')
+                self.log.write('post-login: (this gets saved to file)')
             self.extractCookies()
         except:
             self.error_str = 'Error occurred in HTTP request to auth page'
@@ -252,7 +251,7 @@ class MLBSession:
         try:
             handle = urllib2.urlopen(req)
             if self.debug:
-                self.log.write('getSessionData:\n')
+                self.log.write('extractCookies():')
             self.extractCookies()
         except Exception,detail:
             self.error_str = 'Not logged in'
