@@ -36,6 +36,7 @@ mydefaults = {'speed': DEFAULT_SPEED,
               'video_player': DEFAULT_V_PLAYER,
               'audio_player': DEFAULT_A_PLAYER,
               'audio_follow': [],
+              'alt_audio_follow': [],
               'video_follow': [],
               'blackout': [],
               'favorite': [],
@@ -136,6 +137,10 @@ if len(sys.argv) > 1:
             parsed = check_bool(split[1])
             if parsed != None:
                 mycfg.set('zdebug', parsed)
+        elif split[0] in ('keydebug', 'k' ):
+            parsed = check_bool(split[1])
+            if parsed != None:
+                mycfg.set('keydebug', parsed)
         # Nexdef: n=1
         elif split[0] in ( 'nexdef', 'n' ):
             parsed = check_bool(split[1])
@@ -252,6 +257,9 @@ if mycfg.get('zdebug'):
 # Before creating GameStream object, get session data from login
 session = MLBSession(user=mycfg.get('user'),passwd=mycfg.get('pass'),
                      debug=mycfg.get('debug'))
+if mycfg.get('keydebug'):
+    sessionkey = session.readSessionKey()
+    print "readSessionKey: " + sessionkey
 session.getSessionData()
 # copy all the cookie data to pass to GameStream
 mycfg.set('cookies', {})
@@ -330,6 +338,10 @@ except:
         print 'An error occurred locating the media URL:'
         print m.error_str
         #sys.exit()
+
+if mycfg.get('keydebug'):
+    sessionkey = session.readSessionKey()
+    print "Session-key from media request: " + sessionkey
 
 if mycfg.get('nexdef_url'):
     print mediaUrl
