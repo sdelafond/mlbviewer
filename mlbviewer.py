@@ -713,6 +713,15 @@ def mainloop(myscr,mycfg,mykeys):
             
             
         if c in mykeys.get('MASTER_SCOREBOARD'):
+            # weird statwin crash related to window resizing
+            if mywin == statwin:
+                try:
+                    sbwin.statusRefresh()
+                    sbwin.titleRefresh()
+                    sbwin.Refresh()
+                    mywin = sbwin
+                except:
+                    mywin = listwin
             if mycfg.get('milbtv'):
                 # for now, not going to support master scoreboard for milb
                 mywin.statusWrite('Master scoreboard not supported for MiLB.',wait=2)
