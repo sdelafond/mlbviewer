@@ -287,6 +287,9 @@ class MLBMasterScoreboardWin(MLBListWin):
         division = []
         for fave in self.mycfg.get('favorite'):
             for div in STANDINGS_DIVISIONS_TEAMS:
+                # skip minor league or invalid teamcodes
+                if not TEAMCODES.has_key(fave):
+                    continue
                 if int(TEAMCODES[fave][0]) in STANDINGS_DIVISIONS_TEAMS[div]:
                     division = STANDINGS_DIVISIONS_TEAMS[div]
         for n in range(wlen):
