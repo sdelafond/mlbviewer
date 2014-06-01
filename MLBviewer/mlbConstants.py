@@ -196,8 +196,8 @@ NEXDEF_SPEEDS = ( '128', '500', '800', '1200', '1800', '2400', '3000', '4500' )
 
 DEFAULT_SPEED = '1200'
 
-DEFAULT_V_PLAYER = 'mplayer -cache 2048 -really-quiet'
-DEFAULT_A_PLAYER = 'mplayer -cache 64 -really-quiet'
+DEFAULT_V_PLAYER = 'mplayer -cache 4096'
+DEFAULT_A_PLAYER = 'mplayer -cache 128'
 
 DEFAULT_FLASH_BROWSER='firefox %s'
 
