@@ -7,463 +7,176 @@ users with the media subscriptions they paid for.
 
 Most features require an MLB.TV account.  
 
-A little history...
+1. MLBVIEWER WIKI
+2. CONFIGURATION FILE BASICS
+3. SCREENS BASICS
+4. ADDITIONAL INFORMATION
+5. DONATIONS
 
-Back in 2008, MLB.TV used a Silverlight web plugin.  The original founder of 
-this project did some snooping and figured out that the Silverlight was 
-completely unnecessary and was just providing a user interface (unlike Netflix
-where Silverlight authentication is inseparable and unavoidable.)  A quick 
-hack with curses was released to the Linuxquestions forum and presto!  Linux
-had MLB.TV.  
-
-Back in 2008, mlbviewer was an underground project.  Over the years, we've
-come to learn that MLBAM is not only aware of the project but several
-of their developers have used it or continue to use it.
-
-The official purpose and intention of mlbviewer always has and always will be
-to provide the highest level of feature parity with the offical offering while 
-remaining fully compliant with the MLB.TV Terms of Service.  As such,
-there will never be proxy support or any other means to circumvent blackouts.
-Any other feature that might violate the ToS or compete with a paid app will 
-not be supported or developed (so please don't ask for an Android app or 
-methods to stream to Android or iPhone.)  New feature requests are always
-welcome but they will always be considered against the official offering
-and whether they might either conflict with the Terms of Service or 
-remove revenue from an official competing product.  Similiarly, mlbviewer and 
-its associated tools can be used in ways that might conflict with the ToS.
-The author is not responsible for uses the code and tools were not intended
-for nor will the author assist or provide development support for these uses.
-
-In more simple terms, just because mlbviewer can be used to record streams
-does not mean that the author will provide any assistance or support for
-this unintended feature.  If you do so, you do this at your own risk and you're
-on your own for how to do it.
-
-One final word of disclaimer, it is the author and the user community's belief
-that mlbviewer has been allowed to exist and thrive because of this attitude
-of compliance and fair use.  While mlbviewer is open source, if you create
-a derivative project that does naughty things, please do not distribute that 
-project.  One bad derivative can spell trouble for the source project as well.
-
------------------------------------------------------------------------------
-
-And now the good stuff.... :)
-
-FEATURES OF MLBVIEWER
-
-- Fully scrollable calendar of listings, forward and backward, and ability
-  to jump to specific dates
-- Gameday audio, Basic service video, and Premium (Nexdef) video
-- Live and archive game support for audio and video
-- Adaptive streaming in Nexdef mode (and the ability to disable adaptive mode)
-- Radio synchronized broadcast for video streams (premium service only)
-- Support for all stream speeds
-- Support for home and away coverage
-- Condensed games (available for non-subscribers too)
-- Top Plays for individual games (available for non-subscribers too)
-- Line score view including in game action (available for non-subscribers too)
-- Master Scoreboard view of listings (available to non-subscribers too)
-- Calendar view of listings by month and team (available to non-subscribers)
-- Box scores (available for non-subscribers too)
-- Jump to specific innings
-- Start live games from beginning (premium service only)
-- Standings (available to non-subscribers too)
-- RSS feed aggregator
-- MiLB.TV integration* (requires MiLB.TV subscription)
-- Support for MLB.TV Free Game Of The Day (requires mlb.com account but
-  does not require an MLB.TV subscription)
-
-Features unique to mlbviewer:
-
-- Audio and Video follow: Choose the teams whose broadcast you prefer and
-  whenever you select a game with that team, that team's broadcast is 
-  automatically chosen regardless of whether they are the home or away team
-- Favorite team highlighting: with or without curses colors, mlbviewer can
-  highlight your favorite teams to make their games easier to find in the 
-  listings
-- Display of calendar in local time
-- Bookmark individual games to watch later (REMOVED - Want this feature back?
-  Post a request on Sourceforge or Linuxquestions forum.)
-- mlblistings and mlbplay tools that can be used to display listings or play
-  media without using the curses gui
-
-*MiLB.TV integration assumes the same email and password are used for both
-MLB.TV and MiLB.TV.  If MiLB.TV uses different email and pass, specify the 
-MiLB.TV user and pass as milb_user= and milb_pass= in the ~/.mlb/config.
+DISCLAIMER:
+mlbviewer is intended to be feature compatible with the official MLB.TV offering.  It
+is also developed with the MLB.TV Terms Of Service in mind.  Feature requests that 
+violate the Terms Of Service (proxy support for circumventing blackouts) will be 
+ignored.  Recording of game streams is a grey area of the Terms Of Service.  There
+are ways to use mlbviewer to record streams but these will not be documented.
 
 
-Hot Keys
---------
+1. MLBVIEWER WIKI
 
-The curses interface uses hot-keys (individual case-sensitive keystrokes) 
-to implement certain features or select game media for playback.
+The number of features and settings has grown so large that
+documentation has been moved to the Sourceforge wiki at:
 
-Basic usage:
+http://sourceforge.net/p/mlbviewer/wiki/Home/
 
-COMMANDS
-Enter               : Play video of highlighted game
-a                   : Play Gameday audio of highlighted game
-c                   : Play Condensed Game Video (if available)
-i                   : Jump to specific half inning
-d                   : Toggle debug 
-n                   : Toggle NEXDEF mode
+There are much more advanced settings and usage documented on the Wiki than can
+be listed in a simple README file anymore.  This README should be enough to 
+get started but the Wiki will have many more settings and advanced usage 
+documentation.
 
-LISTINGS
-Up/Down             : Highlight games in the current view
-Left/Right          : Navigate one day forward or back
-j                   : Jump to a date
-p                   : Toggle speed (toggle adaptive streaming in nexdef mode)
-s                   : Toggle HOME or AWAY stream selection
-r                   : Refresh listings
+2. CONFIGURATION FILE BASICS
 
-SCREENS
-t                   : Display top plays listing for current game
-y                   : Play all highlights as a playlist (mplayer-dependent)*
-b                   : View line score
-x                   : View box score
-m                   : Master scoreboard view
-C                   : Calendar view
-g                   : View standings
-w                   : RSS feed for favorite team (or select teams)
-h                   : Display version and keybindings
-l (or Esc)          : Return to MLB listings
-M                   : Switch to MiLB listings
- 
+The default configuration file is rather basic.  It is enough to get started
+with.  However, there are many more options supported than what is listed in 
+the default configuration file.  Refer to the wiki to see a complete list
+and explanation of the options.
 
-Advanced Usage:
-DEBUG
-z                   : Displays listing and coverage debug for a game
-o                   : Displays configuration option values
-R                   : Reload the configuration
+user=          : MLB.TV or MLB.com username
 
-LISTINGS
-p                   : In nexdef mode, p key toggles adaptive streaming
+pass=          : MLB.TV or MLB.com password
 
-RSS
-w                   : 1. By default, RSS opens to the team feed listed in the 
-                      favorite= configuration file option (see below.)  
-                      2. If no favorite is specified, the MLB league-wide feed 
-                      will be used.  
-                      3. If multiple favorite= options are specified, the feeds 
-                      will be aggregated.
-                      4. A specific team feed can be opened by pressing the 
-                      'w' key within the RSS window.  The prompt will ask
-                      for a teamcode.  Use the same teamcodes listed below
-                      as would be used for favorite and follow options (or
-                      the special 'mlb' code for the league-wide feed.)
+Most of the media related features are for MLB.TV subscribers only.  However,
+MLB.TV has one free game of the day.  This only requires an MLB.com username
+and password.
 
-MPLAYER
-#                   : In nexdef streams, the # key in mplayer will select 
-                      audio from video broadcast or audio from synchronized
-                      radio broadcast (premium service only)
+video_player=  : Video player command (mplayer2 or mpv recommended)
 
-*Playing all games as a playlist is mplayer(2)-dependent at this time.  It 
-may be enhanced in the future to support vlc.  Ask for it and it may get 
-fixed faster. :)
+audio_player=  : Gameday Audio player command (mplayer2 or mpv recommended)
 
-The 'h'elp screen is now scrollable so the 'h'elp screen is no longer 
-limited to 20-some most important keys (e.g. a target display of 80x24.)
+use_nexdef=    : Historically, MLB.TV was offered in two video options:
+                 Standard Definition (use_nexdef=0) and High Definition  
+                 (use_nexdef=1) which required the NexDef plugin if using 
+                 the web browser interface.  SD speeds are 300 to 2400 kbps.  
+                 HD speeds extend to 4500 kbps.  SD mode requires rtmpdump
+                 to retrieve the media and stream it to video_player=. HD
+                 mode (or NexDef mode) does not require the NexDef plugin but
+                 it does require mlbhls for retrieving the media and streaming
+                 to video_player=.  Many users prefer SD mode because rtmpdump
+                 starts a stream faster than mlbhls.  However, SD mode is no 
+                 longer officially supported by MLB.TV and may go away at
+                 some future date.
 
----------------------------------------------------------------------------
+speed=         : Speed setting is for SD mode and valid speeds are:
+                 300, 500, 1200, 1800, 2400
 
-CONFIGURATION FILE OPTIONS
+min_bps=       : Minimum speed setting for HD mode
+max_bps=       : Maximum speed setting for HD mode
+                 Valid speeds for HD mode are:
+                 128, 500, 800, 1200, 1800, 2400, 3000, 4500
 
-When started for the first time, mlbviewer creates a configuration file
-with default values.  There are two settings that must be changed from 
-default values.
+adaptive_stream= can be set to true (adapative_stream=1) to enable adaptive
+bitrate streaming for HD mode.  If adaptive_stream=1, the stream will start
+at the min_bps= setting and increase to max_bps= setting if network conditions
+support that bitrate.  If network conditions worsen, mlbhls will adapt the 
+bitrate to a value between min_bps and max_bps until conditions improve.
 
-user=        : MLB.TV username (the email address associated with subscription)
-pass=        : MLB.TV password
+favorite=      : Team code for favorite team.  
 
-milb_user=   : MiLB.TV username (if different than MLB.TV username)
-milb_pass=   : MiLB.TV password (if different than MLB.TV password)
+Specifying a favorite team unlocks a number of useful features such as:
 
-Highlights and condensed games can be accessed without an MLB.TV subscription.  
-If you are not an MLB.TV subscriber, just leave the user= and pass= blank. 
-(3/28/13 - You will get a login error but listings will appear and top plays
-and condensed games will work without an account.)
+ - Favorite team is highlighted in listings, scoreboard, and standings
+ - Cursor focuses on favorite team in listings and scoreboard
+ - Favorite team's media will always be preferred whether home or away (use 
+   disable_favorite_follow=1 in config to disable this functionality)
+ - RSS and Calendar screens default to favorite team
 
-MEDIA PLAYERS
-
-video_player=     : command to play videos
-audio_player=     : command to play gameday audio
-top_plays_player= : command to play highlights and condensed games
-
-top_plays_player defaults to video_player but you can specify a different
-command to adjust cache settings for lower bitrates compared to game streams
-
-STREAM AND SPEED SETTINGS
-
-speed=          : Default speed to select (can be changed with 'p' key) for
-                  basic service streams
-
-Valid speeds are: 300, 500, 1200, 1800, and 2400
-
-use_nexdef=      : True/False for whether to select premium streams
-                   nexdef mode requires mlbhls (see REQUIREMENTS file)
-
-min_bps=         : Minimum quality stream to use for adaptive streaming
-
-max_bps=         : Maximum quality stream to use for adaptive streaming
-
-Specified in bps from 100000 for 100K to 4500000 (4500K)
-
-min_bps and max_bps can now be specified in kbps e.g. min_bps=4500 is 
-equivalent to min_bps=4500000
-
-adaptive_stream  : True/False for whether to let mlbhls adjust the stream
-                   speed based on a running calculation of the delivery of 
-                   the stream (if network is slow, adaptive streaming adjusts)
-
-Without adaptive streaming enabled, mlbhls will attempt to lock onto the 
-highest available stream that is less than or equal to max_bps.
-
-live_from_start= : True/False, for nexdef games, if True, live games will 
-                   begin from the start of the broadcast rather than current
-                   action
-              
-
-MEDIA SELECTION
-
-coverage=      : valid values are 'home' or 'away', default coverage to select
-
-audio_follow=  : always select this team's coverage regardless of coverage
-                 setting (see below for team codes to use for this value)
-
-video_follow=  : same as audio_follow
-
-Only one value per audio_follow or video_follow line is supported but 
-multiple audio_follow and video_follow lines can be in the config file.
-
-LISTINGS
-
-use_color=      : True/False, whether to use colors in the listings screen
-
-bg_color=       : Set the background color.  A value of xterm uses default
-                  background color for your terminal program
-
-favorite_color= : For teams marked as favorite, they will be highlighted in
-                  this color to make them easier to find in listings
-
-favorite=       : Teams to highlight using favorite_color or underline if
-                  use_color=0
-                  (also used for setting a default RSS feed.)
-
-free_color=     : The color to highlight the MLB.TV Free Game Of The Day
-
-If use_color is False (or 0), then favorite highlighting is only an underline
-and favorite_color and bg_color options are ignored.
-
-Valid colors are: black, red, green, yellow, blue, magenta, cyan, and white.
-A value of 'xterm' will use default terminal colors.  Generally, the bg_color
-should be set to xterm to allow the terminal to define the background.
-
-Team codes for audio_follow, video_follow, favorite, and RSS are:
+Team codes for favorite= 
 
      'ana', 'ari', 'atl', 'bal', 'bos', 'chc', 'cin', 'cle', 'col',
      'cws', 'det', 'mia', 'hou', 'kc', 'la', 'mil', 'min', 'nym',
      'nyy', 'oak', 'phi', 'pit', 'sd', 'sea', 'sf', 'stl', 'tb',
      'tex', 'tor', 'was'
 
+These team codes are also used for calendar and RSS screens as well as the mlbplay.py
+script.
 
-MISCELLANEOUS OPTIONS
+For more configuration file options, refer to the wiki.
 
-use_librtmp=        : True/False, if mplayer was built with librtmp support and 
-                      librtmp.so is installed, audio and video playback can
-                      use librtmp in mplayer without requiring rtmpdump
+3. SCREEN BASICS
 
-show_inning_frames= : Innings screen displays an innings frame showing 
-                      which innings are available.  However, this can be 
-                      very confusing when using a screen reader so this setting
-                      disables that display. (True/False)
+mlbviewer is a terminal based application with many screens activated by 
+hotkeys.  Some screens contain spoilers such as scores or game results.
+Some screens however are designed not to have spoilers.
 
-rss_browwser=       : Command to open an RSS news item 
-                      (default: firefox -new-tab %s)
+Hotkey | Screen
+-------|---------------------------------------------------
+l, r   | Default listings view (no spoilers)
+e      | Media detail view (no spoilers)
+m      | Master Scoreboard view (contains spoilers)
+b      | Line score for highlighted game (contains spoilers)
+x      | Box score for highlighted game (contains spoilers)
+C      | Calendar view for favorite team or "C" again to select another team
+         (contains spoilers)
+t      | Top Plays for highlighted game (contains spoilers)
+g      | Standings view 
+w      | RSS view
+M      | MiLB.tv mode
+i      | Jump to inning view (no spoilers)
 
-flash_browser=      : Command to launch a browser to the flash url if 
-                      for some strange reason that's desired over mlbviewer
 
-3/28/13 - flash_browser is not used in 2013.  If you want it, ask for it
-in Linuxquestions forum (see below.)
+Action hotkeys
 
-x_display=          : Ability to display the video_player to a remote display
+Enter  | Play video for highlighted game or top play
+a      | Play Gameday audio for highlighted game
+A      | Play alternate audio for highlighted game (use media detail screen
+         to see availability of alternate audio)
+c      | Play condensed game for highlighted game
+s      | Toggle HOME or AWAY coverage
+p      | In SD mode, toggle the speed setting.  In HD (NexDef) mode, toggle
+         adaptive streaming.
 
-show_player_command=: Display the command being used to start the audio or 
-                      video player before launching the external player 
-                      (True/False)
+Navigation hotkeys
 
-debug=              : True/False, normally errors are handled gracefully
-                      debug=True allows the error to "crash" the program
-                      so an error trace can be collected and used for a bug 
-                      report.
+Up     | Move cursor up
+Down   | Move cursor down
+Left   | Navigate one day back
+Right  | Navigate one day forward
+j      | Jump to a specific date
 
-use_wired_web=      : True/False, set this to True if you are a basic 
-                      subscriber that wants to use the nexdef stream. This
-                      may become the default with the option removed.
 
-                       
+4. ADDITIONAL INFORMATION
 
-True/False settings can be specified as either True/False or 1/0.  For example,
-debug can be:
+mlbviewer tarballs on SourceForge are updated only a few times a season and are
+considered stable releases.
 
-debug=True
-
-debug=1
-
-These are equivalent, just as these are also equivalent:
-
-debug=False
-
-debug=0
-
-------------------------------------------------------------------------
-
-NEW IN 2013: CUSTOM KEYBINDINGS
-
-Are you scratching your head over why a feature uses a non-intuitive key?
-Now you can define your own keybindings in $HOME/.mlb/keybindings.
-
-Some keys will retain unchangeable defaults to preserve inherited (over-loaded)
-behaviors (e.g. the Enter key is used for VIDEO but also used for HIGHLIGHTS),
-but you can create additional bindings for those keys (e.g. VIDEO will always
-be Enter, but you can also add a 'v' key binding.)
-
-All actions and screens map to a symbolic name and that name is linked to a
-help screen string as well as the key bindings.  This means any key bindings
-you change will automatically be updated in the Help screen as well.
-
-To create a keybinding, use NAME=key in $HOME/.mlb/keybindings where NAME
-maps to an action and keys are either specified as their printable ASCII key
-(such as a, b, c, d, etc) or the decimal ASCII value for non-printable keys
-(e.g. 10 maps to Enter and 27 to Esc.)  See "man ascii" to get the 
-decimal conversions.
-
-Valid actions and default keybindings are:
-
-These keys cannot be overridden but they can be added to:
-
-    'UP'                 : [ curses.KEY_UP, ],
-    'DOWN'               : [ curses.KEY_DOWN, ],
-    'LEFT'               : [ curses.KEY_LEFT, ],
-    'RIGHT'              : [ curses.KEY_RIGHT, ],
-    'VIDEO'              : [ 10, ],
-    'AUDIO'              : [ a ],
-    'HELP'               : [ h ],
-
-These can be overridden:
-
-    'JUMP'               : [ j ],
-    'MEDIA_DEBUG'        : [ z ],
-    'OPTIONS'            : [ o ],
-    'LINE_SCORE'         : [ b ],
-    'BOX_SCORE'          : [ x ],
-    'MASTER_SCOREBOARD'  : [ m ],
-    'STANDINGS'          : [ g ],
-    'RSS'                : [ w ],
-    'HIGHLIGHTS'         : [ t ],
-    'HIGHLIGHTS_PLAYLIST': [ y ],
-    'INNINGS'            : [ i ],
-    'LISTINGS'           : [ l ],
-    'MILBTV'             : [ M ],
-    'REFRESH'            : [ r ],
-    'NEXDEF'             : [ n ],
-    'COVERAGE'           : [ s ],
-    'SPEED'              : [ p ],
-    'CONDENSED_GAME'     : [ c ],
-    'RELOAD_CONFIG'      : [ R ],
-    'QUIT'               : [ q ],
-    'DEBUG'              : [ d ],
-
-To add a 'v' key binding to VIDEO, change LISTINGS to 'g' and LINE_SCORE to 'l',
-create a file at $HOME/.mlb/keybindings and add the following lines to it:
-
-VIDEO=v
-LISTINGS=g
-LINE_SCORE=l
-
-To add 'Esc' binding to LISTINGS, add this line:
-
-LISTINGS=27
-
-------------------------------------------------------------------------
-
-MORE HELP
-
-Any questions, problems, concerns, bug reports, praise, etc can be posted
-to the linuxquestions forum below.  Don't worry about the 240 pages.  Just
-post to the end.  People still read and respond to the latest entries:
-
-http://www.linuxquestions.org/questions/fedora-35/mlb.tv-in-linux-432479/
-
-DEVELOPMENT VERSIONS
-
-A stable version of mlbviewer is uploaded to Sourceforge only a few times
-each baseball season.  Generally, one version is uploaded before Opening Day.
-Another version may be uploaded when all the basic features are complete (if
-they are not completely supported by Opening Day), and any service affecting
-bug fixes are uploaded.  However, development is ongoing throughout the 
-season.  New and experimental features may be checked into SVN but the 
-stable release is not refreshed until those features are thoroughly tested
-and complete.  For minor bug fixes and new features, it is recommended to 
-subscribe to the forum thread above and check out a copy of mlbviewer from
-SVN.
+Development on mlbviewer is ongoing all season long.  To get current features
+and fixes between Sourceforge releases, it is necessary to checkout an 
+SVN release.  To use SVN, the subversion package is required.
 
 To checkout an initial copy from SVN:
 
-svn checkout https://svn.code.sf.net/p/mlbviewer/code/trunk mlb2013
+svn checkout https://svn.code.sf.net/p/mlbviewer/code/trunk mlbviewer-svn
 
-You will need the subversion package from your Linux distribution if you 
-do not have the svn command.
+To update an SVN copy to the latest revision:
 
-Svn revisions are not official releases but they have the most recent bug
-fixes and new features being tested.  It is through the efforts of those
-who want to test svn code that the development team gains confidence in
-any new code.  Please post any comments about svn revisions to the Linux
-Questions forum above.
-
-When reporting bugs, please state the svn revision you are using.  This can be
-found with the 'svn info' command:
-
-matthew@tango:~/mlbtv/svn/mlbviewer$ svn info
-Path: .
-URL: https://mlbviewer.svn.sourceforge.net/svnroot/mlbviewer/trunk
-Repository Root: https://mlbviewer.svn.sourceforge.net/svnroot/mlbviewer
-Repository UUID: d37ac8f2-af4a-0410-91f3-abd50a2159f9
-Revision: 75
-Node Kind: directory
-Schedule: normal
-Last Changed Author: daftcat75
-Last Changed Rev: 75
-Last Changed Date: 2008-06-04 17:06:52 -0700 (Wed, 04 Jun 2008)
-
-In the output above, the revision is 75.
-
-To update to a new revision using svn, you do not need to checkout again.  
-Simply navigate to the top directory of your SVN version of mlbviewer and type:
-
+cd mlbviewer-svn
 svn up
 
-You'll see output similar to this:
+Discussion about mlbviewer features and bugs is ongoing on a LinuxQuestions.org
+forum thread.  Don't worry about the 300+ pages of discussion.  Just post
+to the thread and someone will respond within a day or two.
 
-$ svn up
-U    REQUIREMENTS-2012.tx
-U    mlbviewer.py
-U    NEW-MLBPLAY
-U    mlbplay.py
-U    MLBviewer/__init__.p
-U    MLBviewer/mlblogin.p
-U    MLBviewer/mlbtv.py
-Updated to revision 360.
+http://www.linuxquestions.org/questions/fedora-35/mlb.tv-in-linux-432479/
 
-Only files which have been added or changed will be updated.
+Please read the Sourceforge Wiki pages before posting to the forum to spare
+the forum readers from having to answer the same questions over and over again.
 
-----------------------------------------------------------------------------
+http://sourceforge.net/p/mlbviewer/wiki/Home/
 
-DONATIONS
+5. DONATIONS
 
 This project is a labor of love but it still requires an initial investment
-of about 100 hours in Spring Training and many more over the course of the 
-season.  Any contribution of any size is greatly appreciated.  You can 
+of about 100 hours in Spring Training and many more over the course of the
+season.  Any contribution of any size is greatly appreciated.  You can
 make a donation by sending a Paypal payment to:
 
 straycat000(at)yahoo(dot)com
@@ -473,3 +186,4 @@ THANKS AND....
 PLAY BALL!
 
 The mlbviewer Development Team
+

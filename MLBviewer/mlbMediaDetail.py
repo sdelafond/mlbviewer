@@ -19,6 +19,7 @@ STATUSTEXT = {
     "PO" :	"Postponed",
     "NB" :	"Blackout",
     "LB" :	"Blackout",
+    "Manager Challenge" : "Live",
 }
 
 

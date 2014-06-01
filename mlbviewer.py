@@ -564,7 +564,7 @@ def mainloop(myscr,mycfg,mykeys):
                 myscr.addstr(3,0,repr(mywin.records[mywin.current_cursor]))
             # hack for scrolling - don't display these lines if screen too
             # small
-            if curses.LINES-4 > 14 and mywin != calwin:
+            if curses.LINES-4 > 14 and mywin not in ( calwin, statwin ):
                 myscr.addstr(11,0,'preferred media for current cursor:')
                 myscr.addstr(12,0,repr(prefer))
             myscr.refresh()
@@ -1289,8 +1289,8 @@ if __name__ == "__main__":
                   'wiggle_timer': 0.5,
                   'x_display': '',
                   'top_plays_player': '',
-                  'max_bps': 1200000,
-                  'min_bps': 500000,
+                  'max_bps': 2400,
+                  'min_bps': 1200,
                   'live_from_start': 0,
                   'use_nexdef': 0,
                   'use_wired_web': 1,
@@ -1304,6 +1304,7 @@ if __name__ == "__main__":
                   'rss_browser': 'firefox -new-tab %s',
                   'flash_browser': DEFAULT_FLASH_BROWSER}
     
+    mycfg = MLBConfig(mydefaults)
     try:
         os.lstat(myconf)
     except:
@@ -1313,9 +1314,10 @@ if __name__ == "__main__":
             dir=myconfdir
         else:
             dir=None
-        doinstall(myconf,mydefaults,dir)
+        #doinstall(myconf,mydefaults,dir)
+        mycfg.new(myconf, mydefaults, dir)
 
-    mycfg = MLBConfig(mydefaults)
+    #mycfg = MLBConfig(mydefaults)
     mycfg.loads(myconf)
 
     # DEFAULT_KEYBINDINGS is a dict() of default keybindings

@@ -2,11 +2,58 @@
 
 import os
 import re
+import sys
 
 class MLBConfig:
 
     def __init__(self, default_dct=dict()):
         self.data = default_dct
+
+    def new(self, config, defaults, dir):
+        #conf = os.path.join(os.environ['HOME'], authfile)
+        print "Creating configuration files"
+        if dir:
+            try:
+                os.mkdir(dir)
+            except:
+                print 'Could not create directory: ' + dir + '\n'
+                print 'See README for configuration instructions\n'
+                sys.exit()
+        # now write the config file
+        try:
+            fp = open(config,'w')
+        except:
+            print 'Could not write config file: ' + config
+            print 'Please check directory permissions.'
+            sys.exit()
+        fp.write('# See README for explanation of these settings.\n')
+        fp.write('# user and pass are required except for Top Plays\n\n')
+        fp.write('user=\n\n')
+        fp.write('pass=\n\n')
+        for k in ( 'video_player' , 'audio_player', 'favorite', 'use_nexdef', 'speed', 'min_bps', 'max_bps', 'adaptive_stream' ):
+            if type(defaults[k]) == type(list()):
+                if len(defaults[k]) > 0:
+                    for item in defaults[k]:
+                        fp.write(k + '=' + str(item) + '\n')
+                    fp.write('\n')
+                else:
+                    fp.write(k + '=' + '\n\n')
+            else:
+                fp.write(k + '=' + str(defaults[k]) + '\n\n')
+        fp.write('# Many more options are available and documented at:\n')
+        fp.write('# http://sourceforge.net/p/mlbviewer/wiki/Home/\n')
+        fp.close()
+        print
+        print 'Configuration complete!  You are now ready to use mlbviewer.'
+        print
+        print 'Configuration file written to: '
+        print
+        print config
+        print
+        print 'Please review the settings.  You will need to set user and pass.'
+        sys.exit()
+
+
 
     def loads(self, authfile):
         #conf = os.path.join(os.environ['HOME'], authfile)
@@ -58,7 +105,7 @@ class MLBConfig:
             return None
 
     def set(self,key,value):
-        if key in ( 'video_follow', 'audio_follow' ):
+        if key in ( 'video_follow', 'audio_follow', 'alt_audio_follow' ):
             self.data[key].append(value)
         else:
             try:
