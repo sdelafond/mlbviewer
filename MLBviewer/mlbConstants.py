@@ -13,7 +13,7 @@
 # Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 # 02111-1307 USA
 
-VERSION ="2014rev619+"
+VERSION ="2014-sf-3"
 URL = "http://sourceforge.net/projects/mlbviewer"
 EMAIL = "straycat000@yahoo.com"
 
