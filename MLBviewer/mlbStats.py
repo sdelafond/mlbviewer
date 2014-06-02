@@ -4,6 +4,7 @@ import json
 import urllib2
 import datetime
 import httplib
+import time
 
 from mlbError import *
 from mlbConstants import *
@@ -27,6 +28,30 @@ class MLBStats:
             self.season = self.date.year
             self.player_pool = 'QUALIFIER'
 
+    def getBirthdate(self,player_id):
+        bUrl = 'http://mlb.mlb.com/lookup/json/named.player_info.bam?sport_code=%27mlb%27&player_id=' + str(player_id)
+        try:
+            rsp = self.http.getUrl(bUrl)
+        except urllib2.URLError:
+            self.error_str = "UrlError: Could not retrieve statistics"
+            raise MLBUrlError,bUrl
+        try:
+            tmp = json.loads(rsp)
+        except Exception,error:
+            raise MLBUrlError,bUrl
+        bdate_str=tmp['player_info']['queryResults']['row']['birth_date']
+        ddate_str=tmp['player_info']['queryResults']['row']['death_date']
+        out = []
+        ts=time.strptime(bdate_str,'%Y-%m-%dT00:00:00')
+        out.append((ts.tm_year,ts.tm_mon,ts.tm_mday))
+        if ddate_str != "":
+            ts=time.strptime(ddate_str,'%Y-%m-%dT00:00:00')
+            out.append((ts.tm_year,ts.tm_mon,ts.tm_mday))
+        else:
+            out.append(None)
+        return out
+        
+ 
     def prepareStatsUrl(self): 
         self.url = 'http://mlb.mlb.com/pubajax/wf/flow/stats.splayer?page_type=SortablePlayer&game_type=%27R%27&player_pool=QUALIFIER&sport_code=%27mlb%27&results=1000&recSP=1&recPP=50'
         self.league = self.mycfg.get('league')
@@ -107,6 +132,7 @@ class MLBStats:
             except KeyError:
                 totals = self.json['sport_hitting_composed']['sport_career_hitting']['queryResults']['row']
             self.last_update = results['queryResults']['created']
+        # else pitchers
         else:
             results = self.json['sport_pitching_composed']['sport_pitching_tm']
             try:
@@ -124,6 +150,8 @@ class MLBStats:
         totals['season'] = 'Tot'
         totals['team_abbrev'] = 'MLB'
         totals['team_id'] = 0
+        ( totals['birthdate'], 
+          totals['deathdate'] ) = self.getBirthdate(self.player)
         out.append(totals)
         return out
 

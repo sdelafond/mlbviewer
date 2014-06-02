@@ -199,7 +199,19 @@ class MLBStatsWin(MLBListWin):
             titlestr = "%s STATS (%s:%s) SORT ORDER: %s" % ( type, league_str, 
                                                              sort, order )
             if self.player > 0:
-                titlestr = "CAREER STATS FOR: %s"%self.mycfg.get('player_name')
+                titlestr = "PLAYER: %s"%self.mycfg.get('player_name')
+                ( y, m, d ) = self.data[-1]['birthdate']
+                # this part is dumb because datetime doesn't support year<1900
+                # but still want localized name of month
+                now=datetime.now()
+                birthdate=now.replace(month=m, day=d)
+                titlestr += " (Born: " + birthdate.strftime('%b %d, ') + str(y) 
+                if self.data[-1]['deathdate'] is not None:
+                    ( y, m, d ) = self.data[-1]['deathdate']
+                    deathdate=now.replace(month=m, day=d)
+                    titlestr += " Died: " + deathdate.strftime('%b %d, ') + str(y)
+                titlestr += ")"
+                    
         padding = curses.COLS - (len(titlestr) + 6)
         titlestr += ' '*padding
         pos = curses.COLS - 6

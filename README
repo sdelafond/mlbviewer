@@ -14,11 +14,12 @@ Most features require an MLB.TV account.
 5. DONATIONS
 
 DISCLAIMER:
-mlbviewer is intended to be feature compatible with the official MLB.TV offering.  It
-is also developed with the MLB.TV Terms Of Service in mind.  Feature requests that 
-violate the Terms Of Service (proxy support for circumventing blackouts) will be 
-ignored.  Recording of game streams is a grey area of the Terms Of Service.  There
-are ways to use mlbviewer to record streams but these will not be documented.
+mlbviewer is intended to be feature compatible with the official MLB.TV 
+offering.  It is also developed with the MLB.TV Terms Of Service in mind.  
+Feature requests that violate the Terms Of Service (proxy support for 
+circumventing blackouts) will be ignored.  Recording of game streams is a 
+grey area of the Terms Of Service.  There are ways to use mlbviewer to 
+record streams but these will not be documented.
 
 
 1. MLBVIEWER WIKI
@@ -77,7 +78,8 @@ adaptive_stream= can be set to true (adapative_stream=1) to enable adaptive
 bitrate streaming for HD mode.  If adaptive_stream=1, the stream will start
 at the min_bps= setting and increase to max_bps= setting if network conditions
 support that bitrate.  If network conditions worsen, mlbhls will adapt the 
-bitrate to a value between min_bps and max_bps until conditions improve.
+bitrate to a value between min_bps and max_bps until conditions improve.  If
+adaptive_stream=0 (false), the stream will be fixed to the max_bps= rate.
 
 favorite=      : Team code for favorite team.  
 
@@ -96,8 +98,8 @@ Team codes for favorite=
      'nyy', 'oak', 'phi', 'pit', 'sd', 'sea', 'sf', 'stl', 'tb',
      'tex', 'tor', 'was'
 
-These team codes are also used for calendar and RSS screens as well as the mlbplay.py
-script.
+These team codes are also used for calendar and RSS screens as well as the 
+mlbplay.py script.
 
 For more configuration file options, refer to the wiki.
 
@@ -142,6 +144,13 @@ Left   | Navigate one day back
 Right  | Navigate one day forward
 j      | Jump to a specific date
 
+
+TIP: For extra innings games in line score view, the extra frames can be 
+revealed with the Left and Right navigation actions.
+
+TIP: Highlight a player name in Box Score view and press Enter to see career 
+stats for that player.  Highlight a team header like "Kansas City Batting" 
+and press Enter to see team batting statistics.
 
 4. ADDITIONAL INFORMATION
 
