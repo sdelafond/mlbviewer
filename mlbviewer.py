@@ -152,6 +152,10 @@ def mainloop(myscr,mycfg,mykeys):
     linescore = None
     standings = None
 
+    # if gameday_audio=True, remap AUDIO to Enter
+    if mycfg.get('gameday_audio'):
+        mykeys.set('AUDIO',10)
+
     # now it's go time!
     mywin = listwin
     mywin.Splash()

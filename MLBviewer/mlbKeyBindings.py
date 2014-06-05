@@ -58,11 +58,12 @@ class MLBKeyBindings:
 
     def set(self,key,value):
         try:
-            if value.isdigit():
+            if isinstance(value, int) or value.isdigit():
                 self.data[key] = [ value ]
             else:
                 self.data[key] = [ ord(value) ]
         except:
+            #raise
             return None
 
     def macro(self,value):
