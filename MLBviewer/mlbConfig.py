@@ -82,6 +82,7 @@ class MLBConfig:
                              'postseason', 'use_librtmp', 'no_lirc', 
                              'disable_favorite_follow',
                              'highlight_division',
+                             'gameday_audio',
                              'curses_debug', 'use_wired_web' ):
                     if val.isdigit():
                         self.data[key] = bool(int(val))

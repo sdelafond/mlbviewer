@@ -1145,7 +1145,7 @@ def mainloop(myscr,mycfg,mykeys):
                                        GAMEID,wait=2)
                     continue
             if c in mykeys.get('AUDIO') or c in mykeys.get('ALT_AUDIO'):
-                if mywin == topwin:
+                if mywin == topwin and not mycfg.get('gameday_audio'):
                     listwin.statusWrite(UNSUPPORTED,wait=2)
                     continue
                 if c in mykeys.get('ALT_AUDIO'):
