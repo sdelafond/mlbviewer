@@ -185,7 +185,7 @@ mysched = MLBSchedule(ymd_tuple=startdate,time_shift=mycfg.get('time_offset'))
 try:
     available = mysched.getListings(mycfg.get('speed'), mycfg.get('blackout'))
 except (KeyError, MLBXmlError), detail:
-    if cfg.get('debug'):
+    if mycfg.get('debug'):
         raise Exception, detail
     available = []
     #raise 
@@ -338,6 +338,12 @@ except:
         print 'An error occurred locating the media URL:'
         print m.error_str
         #sys.exit()
+
+# If we got at least this far, let's go ahead and set the x_display if present
+# in config.
+if mycfg.get('x_display') not in ( None, '' ):
+    os.environ['DISPLAY'] = mycfg.get('x_display')
+    #print "DISPLAY = %s" % os.environ['DISPLAY']
 
 if mycfg.get('keydebug'):
     sessionkey = session.readSessionKey()
