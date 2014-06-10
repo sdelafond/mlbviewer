@@ -248,7 +248,9 @@ class MLBMediaDetailWin(MLBListWin):
             debug_str = '[DEBUG]'
         else:
             debug_str = ''
-        if self.mycfg.get('use_nexdef'):
+        if self.mycfg.get('gameday_audio'):
+            speedstr = '[AUDIO]'
+        elif self.mycfg.get('use_nexdef'):
             speedstr = '[NEXDF]'
         else:
             hdstr = SSTOGGLE.get(False)

@@ -292,7 +292,7 @@ def mainloop(myscr,mycfg,mykeys):
             if mywin != listwin:
                 continue
             id, mousex, mousey, mousez, bstate  = curses.getmouse()
-            #mywin.statusWrite("mx = %s, my = %s, cc=%s, lr=%s"%(mousex,mousey,listwin.current_cursor,len(listwin.records)),wait=1)
+            #mywin.statusWrite("bstate=%s, mx = %s, my = %s, cc=%s, lr=%s"%(bstate,mousex,mousey,listwin.current_cursor,len(listwin.records)),wait=2)
             mousecursor = mousey - 2
             if mousey < 2:
                 continue
@@ -307,6 +307,7 @@ def mainloop(myscr,mycfg,mykeys):
                     # If mouse clicked on a valid listing, push the event
                     # back to getch() as a VIDEO keypress.
                     curses.ungetch(mykeys.get('VIDEO')[0])
+                    c = myscr.getch()
             else:
                 continue
 
