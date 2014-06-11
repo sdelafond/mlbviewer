@@ -1126,7 +1126,7 @@ def mainloop(myscr,mycfg,mykeys):
                 continue
             elif mywin == statwin:
                 mywin = boxwin
-                mywin.PgUp()
+                #mywin.PgUp()
                 continue
                 
 
