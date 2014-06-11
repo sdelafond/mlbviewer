@@ -185,10 +185,10 @@ class MLBCalendarWin(MLBListWin):
         if game is None:
             return ' '*9
         status = game['game_status']
-        if status in ( 'F', 'I' ):
+        if status in ( 'F', 'I', 'O' ):
             thisRuns=int(this['runs'])
             thatRuns=int(that['runs'])
-            if status == 'F':
+            if status in ( 'F', 'O' ):
                 result = ( 'L', 'W' )[(thisRuns > thatRuns)]
             else:
                 result = ""
