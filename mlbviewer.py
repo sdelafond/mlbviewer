@@ -1121,6 +1121,14 @@ def mainloop(myscr,mycfg,mykeys):
                     stats.getStatsData()
                 except MLBUrlError:
                     raise
+                if mycfg.get('player_id'):
+                    # Sort by team_seq first for players with multiple teams
+                    # in a season.  Except that the last line is the totals,
+                    # skip that line and add it back after.
+                    teams = sorted(stats.data[:-1], key=lambda team: team['team_seq'])
+                    teams.append(stats.data[-1])
+                    # And sort again by season.
+                    stats.data = sorted(teams, key=lambda year: year['season'])
                 statwin = MLBStatsWin(myscr,mycfg,stats.data,stats.last_update)
                 mywin = statwin
                 continue
