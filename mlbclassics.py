@@ -80,6 +80,10 @@ def mainloop(myscr,mycfg,mykeys):
     else:
         mycfg.set('speed',1200)
 
+    # override video_player if classics_player found in config
+    if mycfg.get('classics_player') not in ( None, '' ):
+        mycfg.set('video_player',mycfg.get('classics_player'))
+
     # insurance of proper sort entry
     if mycfg.get('entry_sort') not in CLASSICS_ENTRY_SORT:
         mycfg.set('entry_sort',CLASSICS_ENTRY_SORT[0])
