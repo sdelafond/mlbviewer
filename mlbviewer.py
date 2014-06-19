@@ -1077,6 +1077,7 @@ def mainloop(myscr,mycfg,mykeys):
                     cmdStr = browser.replace('%s',"'" + url + "'")
                 except:
                     cmdStr = browser + " '" + url + "'"
+                mywin.statusWrite("Opening link with: %s" % cmdStr)
                 proc = MLBprocess(cmdStr,retries=0)
                 proc.open()
                 proc.wait()
