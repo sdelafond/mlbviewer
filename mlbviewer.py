@@ -1074,10 +1074,10 @@ def mainloop(myscr,mycfg,mykeys):
                 url = rsswin.data[(rsswin.current_cursor+rsswin.record_cursor)/2][1]
                 browser = mycfg.get('rss_browser')
                 try:
-                    cmdStr = browser.replace('%s',"'" + url + "'")
+                    cmdStr = browser.replace('%s',"'" + url + "'&")
                 except:
-                    cmdStr = browser + " '" + url + "'"
-                mywin.statusWrite("Opening link with: %s" % cmdStr)
+                    cmdStr = browser + " '" + url + "'&"
+                mywin.statusWrite("Opening link with: %s" % cmdStr,wait=1)
                 proc = MLBprocess(cmdStr,retries=0)
                 proc.open()
                 proc.wait()
