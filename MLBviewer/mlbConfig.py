@@ -5,6 +5,7 @@ import re
 import sys
 import tty
 import termios
+from mlbConstants import MLBLIVE
 
 class MLBConfig:
 
@@ -17,22 +18,20 @@ class MLBConfig:
         # happen before curses is initialized so another way is needed to
         # delay application exit long enough for user to read the messages.
         # Thank you, StackOverflow, for the recipe using tty and termios.
-        MLBLIVE = '/lib/live/config/2000-mlblivecd'
 
+        if not MLBLIVE:
+            sys.exit()
+
+        # Inside mlblive.  Grab an acknowledgement before closing window.
+        fd = sys.stdin.fileno()
+        old_settings = termios.tcgetattr(fd)
         try:
-            os.lstat(MLBLIVE)
-            # Inside mlblive.  Grab an acknowledgement before closing window.
-            fd = sys.stdin.fileno()
-            old_settings = termios.tcgetattr(fd)
-            try:
-                print
-                print "Press any key to exit..."
-                tty.setraw(sys.stdin.fileno())
-                ch = sys.stdin.read(1)
-            finally:
-                termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-                sys.exit()
-        except:
+            print
+            print "Press any key to exit..."
+            tty.setraw(sys.stdin.fileno())
+            ch = sys.stdin.read(1)
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
             sys.exit()
 
     def new(self, config, defaults, dir):

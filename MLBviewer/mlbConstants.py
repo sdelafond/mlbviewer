@@ -55,6 +55,10 @@ TESTXML = os.path.join(os.environ['HOME'], AUTHDIR, 'test_epg.xml')
 BLACKFILE = os.path.join(os.environ['HOME'], AUTHDIR, 'blackout.xml')
 HIGHLIGHTS_LIST = '/tmp/highlights.m3u8'
 
+# Need to modify behavior for mlblive version.  Better to make it global flag
+# than check it everywhere a modified behavior is needed.
+MLBLIVE = os.path.isfile('/lib/live/config/2000-mlblivecd')
+
 SOAPCODES = {
     "1"    : "OK",
     "-1000": "Requested Media Not Found",
