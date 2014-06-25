@@ -3,11 +3,37 @@
 import os
 import re
 import sys
+import tty
+import termios
 
 class MLBConfig:
 
     def __init__(self, default_dct=dict()):
         self.data = default_dct
+
+    def exit(self):
+        # MLBLIVE is a Live DVD/VM version of mlbviewer.  The application
+        # is started with an icon click.  The first messages from new()
+        # happen before curses is initialized so another way is needed to
+        # delay application exit long enough for user to read the messages.
+        # Thank you, StackOverflow, for the recipe using tty and termios.
+        MLBLIVE = '/lib/live/config/2000-mlblivecd'
+
+        try:
+            os.lstat(MLBLIVE)
+            # Inside mlblive.  Grab an acknowledgement before closing window.
+            fd = sys.stdin.fileno()
+            old_settings = termios.tcgetattr(fd)
+            try:
+                print
+                print "Press any key to exit..."
+                tty.setraw(sys.stdin.fileno())
+                ch = sys.stdin.read(1)
+            finally:
+                termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+                sys.exit()
+        except:
+            sys.exit()
 
     def new(self, config, defaults, dir):
         #conf = os.path.join(os.environ['HOME'], authfile)
@@ -18,14 +44,14 @@ class MLBConfig:
             except:
                 print 'Could not create directory: ' + dir + '\n'
                 print 'See README for configuration instructions\n'
-                sys.exit()
+                self.exit()
         # now write the config file
         try:
             fp = open(config,'w')
         except:
             print 'Could not write config file: ' + config
             print 'Please check directory permissions.'
-            sys.exit()
+            self.exit()
         fp.write('# See README for explanation of these settings.\n')
         fp.write('# user and pass are required except for Top Plays\n\n')
         fp.write('user=\n\n')
@@ -51,7 +77,7 @@ class MLBConfig:
         print config
         print
         print 'Please review the settings.  You will need to set user and pass.'
-        sys.exit()
+        self.exit()
 
 
 
