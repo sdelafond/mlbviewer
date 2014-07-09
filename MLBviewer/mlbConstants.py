@@ -95,7 +95,7 @@ STATUSCODES = {
 # of call letters for the various media outlets that cover that team.
 TEAMCODES = {
     'ana': ('108', 'Los Angeles Angels'),
-    'al' : ( None, 'American League', ''),
+    'al' : ( 0, 'American League', ''),
     'ari': ('109', 'Arizona Diamondbacks', ''),
     'atl': ('144', 'Atlanta Braves', ''),
     'bal': ('110', 'Baltimore Orioles',''),
@@ -118,7 +118,7 @@ TEAMCODES = {
     'lan':  ('119', 'Los Angeles Dodgers', ''),
     'mil': ('158', 'Milwaukee Brewers', ''),
     'min': ('142', 'Minnesota Twins', ''),
-    'nl' : ( None, 'National League', ''),
+    'nl' : ( 0, 'National League', ''),
     'nym': ('121', 'New York Mets', ''),
     'nyn': ('121', 'New York Mets', ''),
     'nyy': ('147', 'New York Yankees', ''),
@@ -567,6 +567,7 @@ STATS_TEAMS = {
     146 : 'mia',
     147 : 'nyy',
     158 : 'mil',
+    159 : 'asg',
 }
 
 DAYS_OF_WEEK = {
