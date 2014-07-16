@@ -123,6 +123,15 @@ if len(sys.argv) > 1:
             mycfg.set('prefer_plus', True)
             teamcode = split[1]
             player = mycfg.get('video_player')
+        # Video player: video_player=<video_player>
+        elif split[0] in ( 'video_player', ):
+            mycfg.set('video_player', split[1])
+        # Audio player: audio_player=<audio_player>
+        elif split[0] in ( 'audio_player', ):
+            mycfg.set('audio_player', split[1])
+        # Top-plays player: top_plays_player=<top_plays_player>
+        elif split[0] in ( 'top_plays_player', ):
+            mycfg.set('top_plays_player', split[1])
         # Speed: p=<speed> (Default: 1200)
         elif split[0] in ( 'speed', 'p' ):
             mycfg.set('speed', split[1])
