@@ -132,6 +132,9 @@ if len(sys.argv) > 1:
         # Top-plays player: top_plays_player=<top_plays_player>
         elif split[0] in ( 'top_plays_player', ):
             mycfg.set('top_plays_player', split[1])
+        # Use librtmp: use_librtmp=<0|1>
+        elif split[0] in ( 'use_librtmp', ):
+            mycfg.set('use_librtmp', split[1])
         # Speed: p=<speed> (Default: 1200)
         elif split[0] in ( 'speed', 'p' ):
             mycfg.set('speed', split[1])
