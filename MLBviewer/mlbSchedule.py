@@ -75,9 +75,12 @@ def padstr(num):
 
 class MLBSchedule:
 
-    def __init__(self,ymd_tuple=None,time_shift=None,use_wired_web=False):
+    def __init__(self, *args, **kwargs):
         # maybe the answer for nexdef for basic subscribers
-        self.use_wired_web = use_wired_web
+        self.use_wired_web = kwargs.get('use_wired_web')
+        ymd_tuple = kwargs.get('ymd_tuple')
+        time_shift = kwargs.get('time_shift')
+        self.international = kwargs.get('international')
         # Default to today
         if not ymd_tuple:
             now = datetime.datetime.now()
@@ -222,6 +225,12 @@ class MLBSchedule:
            for attr in media.attributes.keys():
                tmp[attr] = str(media.getAttribute(attr))
            out = []
+           # skip TBS-NAT for international postseason
+           if self.international:
+               if tmp.get('tbs_auth_required') == "Y":
+                   continue
+               if tmp.get('mlbn_auth_required') == "Y":
+                   continue
            try:
                tmp['playback_scenario'] = tmp['playback_scenario'].strip()
            except:

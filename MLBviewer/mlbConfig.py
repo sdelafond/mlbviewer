@@ -108,6 +108,7 @@ class MLBConfig:
                              'disable_favorite_follow',
                              'highlight_division',
                              'gameday_audio',
+                             'international',
                              'curses_debug', 'use_wired_web' ):
                     if val.isdigit():
                         self.data[key] = bool(int(val))

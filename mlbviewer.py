@@ -184,7 +184,8 @@ def mainloop(myscr,mycfg,mykeys):
     # Listings
     mlbsched = MLBSchedule(ymd_tuple=startdate,
                           time_shift=mycfg.get('time_offset'),
-                          use_wired_web=mycfg.get('use_wired_web'))
+                          use_wired_web=mycfg.get('use_wired_web'),
+                          international=mycfg.get('international'))
     milbsched = MiLBSchedule(ymd_tuple=startdate,
                              time_shift=mycfg.get('time_offset'))
     # default to MLB.TV
