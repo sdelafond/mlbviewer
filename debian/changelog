@@ -1,0 +1,5 @@
+mlbviewer (2014.sf.3-1) unstable; urgency=low
+
+  * Initial release (Closes: #764112)
+
+ -- Sebastien Delafond <seb@debian.org>  Sun, 05 Oct 2014 16:00:22 +0200

@@ -1,0 +1,17 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+DEST_DIR := $(CURDIR)/debian/mlbviewer
+
+%:
+	dh $@ --sourcedirectory=$(SOURCE_DIR)
+
+override_dh_auto_clean:
+	rm -fr $(DEST_DIR)
+
+override_dh_auto_install:
+	mkdir -p $(DEST_DIR)/usr/bin
+	cp *.py  $(DEST_DIR)/usr/bin/

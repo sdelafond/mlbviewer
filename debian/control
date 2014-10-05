@@ -1,0 +1,22 @@
+Source: mlbviewer
+Section: python
+Priority: optional
+Maintainer: Sebastien Delafond <seb@debian.org>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.5
+Homepage: http://sourceforge.net/projects/mlbviewer
+Vcs-Git: git://anonscm.debian.org/collab-maint/mlbviewer.git
+Vcs-Browser: http://anonscm.debian.org/?p=collab-maint/mlbviewer.git;a=summary
+
+Package: mlbviewer
+Architecture: any
+Depends: python
+Recommends: rtmpdump
+Description: Curses interface to the MLB.TV media offering
+ A collection of tools to view and listen to streaming baseball games
+ from MLB.TV. While the main streaming content is mostly for paid
+ MLB.TV subscribers only, there are a significant number of features
+ and views available to non-subscribers as well including one free
+ game each day. You can watch MLB classic content from YouTube without
+ a browser, and MiLB.TV and Postseason.TV are also integrated into the
+ same mlbviewer interface.
