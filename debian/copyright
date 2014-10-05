@@ -4,7 +4,7 @@ Source: http://sourceforge.net/projects/mlbviewer
 
 Files: *
 Copyright: straycat000@yahoo.com
-License: GPL-2.0+
+License: GPL-2+
 
 Files: debian/*
 Copyright: 2014 Sebastien Delafond <seb@debian.org>
