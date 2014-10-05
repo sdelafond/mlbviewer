@@ -1,0 +1,47 @@
+Requirements
+
+See REQUIREMENTS-2014.txt file for 2014 requirements.  This file is mostly
+here for quick and dirty summary.
+------------
+
+For Linux and other *nixes:
+
+* python (should be included in most modern Linux distributions)
+* rtmpdump (http://rtmpdump.mplayerhq.hu/) for audio and basic service video
+* mlbhls (http://code.google.com/p/mlbtv-hls-nexdef/) for nexdef video
+NOTE: The experimental branch of mlbhls is required for mlbviewer:
+svn co https://mlbtv-hls-nexdef.googlecode.com/svn/branches/experimental mlbhls
+* mplayer2 is the recommended player for mlbviewer video streams
+* An MLB.TV account (http://mlb.mlb.com/mlb/subscriptions/index.jsp)
+* For non-subscriber features (highlights and condensed games only), leave
+  user= and pass= blank in the ~/.mlb/config file.
+* python-gdata is also required for mlbclassics.py and should be available
+in the Linux distribution package manager (apt, yum, yast, etc.)
+
+For Windows:
+
+* cygwin (http://www.cygwin.com)
+* python
+* rtmpdump
+* mlbhls
+* mplayer or SMPlayer
+
+Installation
+------------
+
+For local use:
+     python mlbviewer.py from this directory.
+
+If python3 is the system default, use python2:
+     python2 mlbviewer.py
+
+
+Note: Because MLB.TV has changed their service dramatically over the years, 
+mlbviewer no longer attempts backwards compatibility.  If it is desired to 
+play a previous year's games, please ask in the LQ forum (see README file) to
+find out what the last stable release was for that season and instructions
+on how to check it out from SVN.
+
+For help, wait for the listings to load and press the 'h' key.
+
+For more information, including configuration file settings, read the README.
