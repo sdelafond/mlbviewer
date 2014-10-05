@@ -79,10 +79,18 @@ class MLBMediaDetailWin(MLBListWin):
                 alt_home_audio=[]
                 alt_away_audio=[]
             else:
-                away_video=game['media']['video']['away']
-                home_video=game['media']['video']['home']
-                away_audio=game['media']['audio']['away']
-                home_audio=game['media']['audio']['home']
+                if not len(game['media']['video']):
+                    away_video=("(None)",)
+                    home_video=("(None)",)
+                else:
+                    away_video=game['media']['video']['away']
+                    home_video=game['media']['video']['home']
+                if not len(game['media']['audio']):
+                    away_audio=("(None)",)
+                    home_audio=("(None)",)
+                else:
+                    away_audio=game['media']['audio']['away']
+                    home_audio=game['media']['audio']['home']
                 alt_away_audio=game['media']['alt_audio']['away']
                 alt_home_audio=game['media']['alt_audio']['home']
             away_vidstr = ("(No Video)",away_video[0])[len(away_video)>0]

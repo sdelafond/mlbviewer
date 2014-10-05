@@ -507,6 +507,10 @@ def mainloop(myscr,mycfg,mykeys):
                                  listwin.current_cursor)
                 mywin = sbwin
             elif mywin in ( detailwin, ):
+                if not len(listwin.records):
+                    listwin.statusWrite("No listings for today.",wait=2)
+                    mywin = listwin
+                    continue
                 game=listwin.records[listwin.current_cursor]
                 gameid=game[6]
                 detail = MLBMediaDetail(mycfg,listwin.data)
