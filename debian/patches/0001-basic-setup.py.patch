@@ -1,0 +1,34 @@
+From: =?utf-8?q?S=C3=A9bastien_Delafond?= <sdelafond@gmail.com>
+Date: Sun, 5 Oct 2014 16:36:17 +0200
+Subject: basic setup.py
+
+---
+ setup.py | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+ create mode 100644 setup.py
+
+diff --git a/setup.py b/setup.py
+new file mode 100644
+index 0000000..05c2270
+--- /dev/null
++++ b/setup.py
+@@ -0,0 +1,19 @@
++from distutils.core import setup
++import glob
++
++setup(
++        name = "mlbviewer",
++        version = "2014.sf.3",
++        description = "Curses interface to the MLB.TV media offering",
++        author = "straycat000@yahoo.com",
++        url = "http://sourceforge.net/projects/mlbviewer",
++        packages = [ "MLBviewer" ],
++        scripts = glob.glob("m*.py"),
++        classifiers = [
++            "License :: OSI Approved :: GPL License",
++            "Environment :: Console",
++            "Environment :: Console :: Curses",
++            "Operating System :: Linux",
++            "Programming Language :: Python",
++        ]
++)

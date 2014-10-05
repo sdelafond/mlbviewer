@@ -10,7 +10,7 @@ Vcs-Browser: http://anonscm.debian.org/?p=collab-maint/mlbviewer.git;a=summary
 
 Package: mlbviewer
 Architecture: any
-Depends: python
+Depends: python, ${misc:Depends}
 Recommends: rtmpdump
 Description: Curses interface to the MLB.TV media offering
  A collection of tools to view and listen to streaming baseball games
