@@ -2,7 +2,7 @@ Source: mlbviewer
 Section: python
 Priority: optional
 Maintainer: Sebastien Delafond <seb@debian.org>
-Build-Depends: debhelper (>= 9)
+Build-Depends: debhelper (>= 9), python
 Standards-Version: 3.9.5
 Homepage: http://sourceforge.net/projects/mlbviewer
 Vcs-Git: git://anonscm.debian.org/collab-maint/mlbviewer.git
