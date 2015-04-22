@@ -134,3 +134,35 @@ class MLBBoxScore:
             # there should only be one
             return node
 
+    def parseDataBlob(self,blob):
+        data='<data>'+blob.childNodes[0].nodeValue + '</data>'
+        dptr=parseString(data)
+        out=[]
+        tmp_str=''
+        #print "dptr.childNodes[0].childNodes:"
+        #print dptr.childNodes[0].childNodes
+        for elem in dptr.childNodes[0].childNodes:
+            self.blobNode(elem)
+
+    def blobNode(self,node):
+        if node.nodeName == 'b':
+            print node.childNodes[0].nodeValue
+        elif node.nodeName == 'span':
+            for child in node.childNodes:
+                self.blobNode(child)
+        elif node.nodeType == node.TEXT_NODE:
+            self.blobTextNode(node)
+        elif node.nodeName == 'br':
+            pass
+
+    def blobTextNode(self,node):
+        if not node.nodeValue.isspace():
+            print node.nodeValue
+            
+
+
+if __name__ == "__main__":
+    gameid = '2015/04/20/minmlb-kcamlb-1'
+    Box = MLBBoxScore(gameid)
+    boxscore = Box.getBoxData(gameid)
+    Box.parseDataBlob(boxscore['batting']['home']['batting-data'][0])

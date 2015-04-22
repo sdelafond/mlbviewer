@@ -258,6 +258,8 @@ class MLBBoxScoreWin(MLBListWin):
                     if c_elem.nodeName == 'b':
                         tmp_str += c_elem.childNodes[0].nodeValue
                     elif c_elem.nodeType == elem.TEXT_NODE:
+                        if c_elem.nodeValue.isspace():
+                            continue
                         if len(tmp_str) + len(c_elem.nodeValue) > curses.COLS-1:
                             tmp_str1 = tmp_str + ' '
                             for word in c_elem.nodeValue.split(' '):
@@ -274,6 +276,8 @@ class MLBBoxScoreWin(MLBListWin):
                         self.data.append((tmp_str,0,None))
                         tmp_str=''
             elif elem.nodeType == elem.TEXT_NODE:
+                if elem.nodeValue.isspace():
+                    continue
                 if len(tmp_str) + len(elem.nodeValue) > curses.COLS-1:
                     tmp_str1 = tmp_str + ' '
                     for word in elem.nodeValue.split(' '):
