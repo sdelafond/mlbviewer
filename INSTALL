@@ -8,9 +8,9 @@ For Linux and other *nixes:
 
 * python (should be included in most modern Linux distributions)
 * rtmpdump (http://rtmpdump.mplayerhq.hu/) for audio and basic service video
-* mlbhls (http://code.google.com/p/mlbtv-hls-nexdef/) for nexdef video
+* mlbhls (https://github.com/thegryghost/mlbtv-hls-nexdef/tree/experimental)) for nexdef video
 NOTE: The experimental branch of mlbhls is required for mlbviewer:
-svn co https://mlbtv-hls-nexdef.googlecode.com/svn/branches/experimental mlbhls
+git clone https://github.com/thegryghost/mlbtv-hls-nexdef.git
 * mplayer2 is the recommended player for mlbviewer video streams
 * An MLB.TV account (http://mlb.mlb.com/mlb/subscriptions/index.jsp)
 * For non-subscriber features (highlights and condensed games only), leave
