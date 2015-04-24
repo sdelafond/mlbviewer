@@ -383,7 +383,8 @@ class MediaStream:
             try:
                 authStatus = reply.getElementsByTagName('auth-status')[0].childNodes[0].nodeName
                 if authStatus == 'notAuthorizedStatus':
-                    self.error_str = "Media response contained a notAuthorizedStatus."
+                    self.error_str = "You are not authorized to view this content.\nIf you are a basic subscriber, try the home stream."
+                    self.log.write("Received a notAuthorized status.  Response was saved in %s.\n" % ERRORLOG_2)
             except:
                 pass
             df = open(ERRORLOG_2,'w')
