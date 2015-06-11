@@ -38,7 +38,7 @@ try:
     from xml.dom.minidom import parseString
 except:
     print "Missing python external dependencies."
-    print "Please read the REQUIREMENTS-2014.txt file."
+    print "Please read the REQUIREMENTS-2015.txt file."
     sys.exit()
 
 def gameTimeConvert(listdate, time_shift=None):

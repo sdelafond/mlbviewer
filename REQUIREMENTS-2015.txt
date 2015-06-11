@@ -84,7 +84,7 @@ other players like vlc are using.
 
 ---------------------------------------------------------------------------
 
-READ THE README FOR MORE HELP ON USING MLBVIEWER 2014.
+READ THE README FOR MORE HELP ON USING MLBVIEWER 2015.
 
 Also, you can post any support questions either to the Sourceforge forum at:
 
