@@ -1,0 +1,96 @@
+Quick Overview of MiLB.tv Integration
+=====================================
+
+MiLB.tv login can re-use user= and pass= settings if MiLB.tv credentials are 
+the same as MLB.tv.  If they are different, use milb_user= and milb_pass= 
+in ~/.mlb/config to set the MiLB.tv user and pass.
+
+'M' key switches mode to MiLB.tv.  
+
+Left, Right, Up, Down, Jump to specific date (j key) all work as expected
+
+Line scores (b key) and box scores (x key) available in MiLB.tv as well as 
+MLB.tv mode.
+
+Master scoreboard view (m key) is not supported for MiLB.tv mode.
+
+Highlights, gameday audio streams, condensed games, coverage selection (home 
+vs away), nexdef, speed selection, and jump to innings are all not supported in 
+MiLB.tv.  MiLB.tv has only one stream and one speed.  Hope you like it. ;)
+
+Features that accidentally work (inherited code from mlbviewer) or mostly work:
+
+Favorite Team Highlighting
+==========================
+
+Find the three letter code for your favorite minor league team and add it as 
+a favorite= option in your ~/.mlb/config.  One way to find it is to highlight
+a game in the listings and press the 'z' key:
+
+For example, to add Omaha Storm Chasers, this is the listing:
+
+ 4:35 PM: Tucson Padres at Omaha Storm Chasers 
+
+and the z key debug:
+
+({'home': u'oma', 'away': u'tuc'}, datetime.datetime(2013, 5, 20, 16, 35), [(u''
+, u'541', u'26891883', ''), (u'', u'549', u'26891883', '')], [], None, 'P', u'20
+13/05/20/tucaaa-omaaaa-1', u'media_dead')
+
+Omaha is the home team so their teamcode is 'oma'.
+
+In ~/.mlb/config,
+
+favorite=oma
+
+Restart mlbviewer and enter MiLB.tv mode and Omaha's games will be highlighted
+either with favorite_color= (if use_color=1) or underlined (if use_color=0.)
+
+RSS mostly works with minor league teams
+========================================
+
+If favorite= contains an minor league team, when RSS is opened in MiLB mode
+using the 'w' key, the feed for that team (or teams) will be opened.  Other
+teams can be selected via their teamcode as well but the feed may be incomplete
+(still working this out.)
+
+milblistings.py and milbplay.py
+===============================
+
+MiLB.tv can be scripted just like MLB.tv with the use of milblistings.py and
+milbplay.py.
+
+Unlike mlbplay.py, the three letter team codes are collected and entered into
+the TEAMCODES data structure dynamically when the listings are retrieved. 
+This means milblistings.py should be used first to determine whether a desired
+team is on the schedule for the day.  If the team does not have a broadcast 
+that day, milbplay may report an invalid teamcode error.  Also different from
+mlblistings.py and mlbplay.py, event-id's (E: column in mlblistings) are 
+not really used in MiLB.tv but content-id's (which are usually determined 
+dynamically in MLB.tv) are in the MiLB.tv listings.  Since MiLB.tv does 
+not support condensed games, the c= parameter in milbplay allows the 
+selection of a particular stream (e.g. a particular game in a double-header)
+by content-id.
+
+Sample milblistings:
+
+$ ./milblistings.py | grep lou
+ P: 12:33 AM: 2013/05/20/louaaa-gwiaaa-2 C: 27254905
+ P:  2:05 PM: 2013/05/20/louaaa-gwiaaa-1 C: 26891849
+
+Without c= parameter,
+
+$ ./milbplay.py v=lou z=1
+media = [[(u'', u'431', u'27254905', ''), (u'', u'416', u'27254905', '')], [(u'', u'431', u'26891849', ''), (u'', u'416', u'26891849', '')]]
+prefer = (u'', u'416', u'26891849', '')
+
+The 2013/05/20/louaaa-gwiaaa-1 stream will be selected.  To select the 
+2013/05/20/louaaa-gwiaaa-2 stream, use the content-id (c= parameter):
+
+$ ./milbplay.py v=lou c=27254905 z=1
+media = [[(u'', u'431', u'27254905', ''), (u'', u'416', u'27254905', '')], [(u'', u'431', u'26891849', ''), (u'', u'416', u'26891849', '')]]
+prefer = (u'', u'416', u'27254905', '')
+
+z=1 is media debug flag to display the preferred content without taking any
+action.  Remove the z=1 flag to play the stream.
+

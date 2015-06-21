@@ -1,0 +1,50 @@
+mlbviewer.py is the main program.  It supports up and down arrow to scroll
+through the list and all windows are scrollable (e.g. some content may 
+exist on the next screen so keep arrowing down or up until you reach
+the end of the screen.)
+
+Media Playback
+Keypress              Feature
+========              =======
+Enter                 Play video stream
+a                     Play audio stream
+c                     Play condensed game video stream
+i                     Play from specific half inning
+
+Navigation
+Keypress              Feature
+========              =======
+m                     Switch to master scoreboard view
+l                     Switch to listings view
+c                     Switch to calendar view
+r                     Refresh listings view
+Left                  Back one day
+Right                 Forward one day
+j                     Jump to specific date (or Enter to return to today)
+b                     Line score
+x                     Box score
+t                     Highlights view
+w                     RSS feed
+g                     Standings
+
+Configuration
+Keypress              Feature
+========              =======
+n                     Toggle between nexdef and non-nexdef mode
+p                     Toggle between speeds (non-nexdef mode)
+p                     Toggle between fixed rate or adapative (nexdef mode)
+s                     Toggle between home and away stream
+o                     Display options in config file 
+R                     Reload config file
+
+Debug
+Keypress              Feature
+========              =======
+d                     Enable media request debugging (display URL only)
+z                     Enable stream selection debug 
+
+Note: For extra innings in line score view, use left and right arrow 
+keys to see the extra frames.
+
+All keys can be remapped to custom keybindings.  See the README file
+for details on how to create a keybindings file.
