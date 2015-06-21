@@ -1,3 +1,11 @@
+mlbviewer (2015.sf.1-1) unstable; urgency=medium
+
+  * New upstream version
+  * Remove .svn/
+  * Bump-up Standards-Version
+
+ -- Sebastien Delafond <seb@debian.org>  Sun, 21 Jun 2015 15:17:26 +0200
+
 mlbviewer (2014.sf.3-2) unstable; urgency=medium
 
   * Build-depend on python to fix FTBFS (Closes: #764260)
