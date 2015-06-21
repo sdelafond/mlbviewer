@@ -3,7 +3,7 @@ Section: python
 Priority: optional
 Maintainer: Sebastien Delafond <seb@debian.org>
 Build-Depends: debhelper (>= 9), python
-Standards-Version: 3.9.5
+Standards-Version: 3.9.6
 Homepage: http://sourceforge.net/projects/mlbviewer
 Vcs-Git: git://anonscm.debian.org/collab-maint/mlbviewer.git
 Vcs-Browser: http://anonscm.debian.org/?p=collab-maint/mlbviewer.git;a=summary
