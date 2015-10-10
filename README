@@ -101,6 +101,15 @@ Team codes for favorite=
 These team codes are also used for calendar and RSS screens as well as the 
 mlbplay.py script.
 
+Two flags are necessary for international users to watch live postseason
+games:
+
+international=  : True/False, prune out US national listings and display 
+                  international stream listing instead
+
+postseason=     : True/False, ignore US blackout statuses to watch
+                  international streams
+
 For more configuration file options, refer to the wiki.
 
 3. SCREEN BASICS
