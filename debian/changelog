@@ -1,3 +1,11 @@
+mlbviewer (2015.sf.1-2) unstable; urgency=medium
+
+  * Remove pyc files from repository
+  * Switch to using python:Depends, and add explicit dependency on
+    python-gdata (Closes: #802180)
+
+ -- Sebastien Delafond <seb@debian.org>  Sun, 18 Oct 2015 10:41:20 +0200
+
 mlbviewer (2015.sf.1-1) unstable; urgency=medium
 
   * New upstream version
