@@ -211,11 +211,8 @@ class MLBSchedule:
         content['audio'] = []
         content['alt_audio'] = []
         content['video'] = {}
-        content['video']['300'] = []
-        content['video']['500'] = []
-        content['video']['1200'] = []
-        content['video']['1800'] = []
-        content['video']['2500'] = []
+        for s in STREAM_SPEEDS:
+            content['video'][s]= []
         content['video']['swarm'] = []
         content['condensed'] = []
         event_id = str(xp.getAttribute('calendar_event_id'))
@@ -295,7 +292,7 @@ class MLBSchedule:
                        if self.use_wired_web:
                            content['video']['swarm'].append(out)
                    elif tmp['playback_scenario'] == 'FMS_CLOUD':
-                       for s in ('300', '500', '1200', '1800', '2500'):
+                       for s in STREAM_SPEEDS:
                            content['video'][s].append(out)
                    else:
                        continue
@@ -380,15 +377,14 @@ class MLBSchedule:
                 TEAMCODES[dct['home']] = TEAMCODES['unk']
             #raise Exception,repr(game)
             dct['video'] = {}
-            dct['video']['128'] = []
-            dct['video']['500'] = []
-            dct['video']['800'] = []
-            dct['video']['1200'] = []
-            dct['video']['1800'] = []
+            for s in STREAM_SPEEDS:
+                dct['video'][s] = []
             dct['video']['swarm'] = []
             dct['condensed'] = []
             #raise Exception,repr(game['content']['video'])
-            for key in ('300', '500', '1200', '1800', '2500', 'swarm'):
+            speeds=list(STREAM_SPEEDS)
+            speeds.append('swarm')
+            for key in speeds:
                 try:
                     dct['video'][key] = game['content']['video'][key]
                 except KeyError:
