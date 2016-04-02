@@ -56,7 +56,7 @@ audio_player=  : Gameday Audio player command (mplayer2 or mpv recommended)
 use_nexdef=    : Historically, MLB.TV was offered in two video options:
                  Standard Definition (use_nexdef=0) and High Definition  
                  (use_nexdef=1) which required the NexDef plugin if using 
-                 the web browser interface.  SD speeds are 300 to 2400 kbps.  
+                 the web browser interface.  SD speeds are 300 to 2500 kbps.  
                  HD speeds extend to 4500 kbps.  SD mode requires rtmpdump
                  to retrieve the media and stream it to video_player=. HD
                  mode (or NexDef mode) does not require the NexDef plugin but
@@ -67,7 +67,7 @@ use_nexdef=    : Historically, MLB.TV was offered in two video options:
                  some future date.
 
 speed=         : Speed setting is for SD mode and valid speeds are:
-                 300, 500, 1200, 1800, 2400
+                 300, 500, 1200, 1800, 2500
 
 min_bps=       : Minimum speed setting for HD mode
 max_bps=       : Maximum speed setting for HD mode

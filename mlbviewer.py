@@ -1308,7 +1308,7 @@ if __name__ == "__main__":
                   'wiggle_timer': 0.5,
                   'x_display': '',
                   'top_plays_player': '',
-                  'max_bps': 2400,
+                  'max_bps': 2500,,
                   'min_bps': 1200,
                   'live_from_start': 0,
                   'use_nexdef': 0,

@@ -215,7 +215,7 @@ class MLBSchedule:
         content['video']['500'] = []
         content['video']['1200'] = []
         content['video']['1800'] = []
-        content['video']['2400'] = []
+        content['video']['2500'] = []
         content['video']['swarm'] = []
         content['condensed'] = []
         event_id = str(xp.getAttribute('calendar_event_id'))
@@ -295,7 +295,7 @@ class MLBSchedule:
                        if self.use_wired_web:
                            content['video']['swarm'].append(out)
                    elif tmp['playback_scenario'] == 'FMS_CLOUD':
-                       for s in ('300', '500', '1200', '1800', '2400'):
+                       for s in ('300', '500', '1200', '1800', '2500'):
                            content['video'][s].append(out)
                    else:
                        continue
@@ -388,7 +388,7 @@ class MLBSchedule:
             dct['video']['swarm'] = []
             dct['condensed'] = []
             #raise Exception,repr(game['content']['video'])
-            for key in ('300', '500', '1200', '1800', '2400', 'swarm'):
+            for key in ('300', '500', '1200', '1800', '2500', 'swarm'):
                 try:
                     dct['video'][key] = game['content']['video'][key]
                 except KeyError:
