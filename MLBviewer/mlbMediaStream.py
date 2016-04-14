@@ -22,6 +22,7 @@ import cookielib
 import os
 import subprocess
 import select
+import base64
 
 from copy import deepcopy
 from xml.dom.minidom import parse
@@ -52,7 +53,9 @@ class MediaStream:
         self.use_nexdef    = self.cfg.get('use_nexdef')
         self.postseason    = self.cfg.get('postseason')
         self.use_librtmp   = self.cfg.get('use_librtmp')
-        self.use_wired_web = self.cfg.get('use_wired_web')
+        # EXPERIMENTAL: make this a default now
+        #self.use_wired_web = self.cfg.get('use_wired_web')
+        self.use_wired_web = 1
         self.max_bps       = int(self.cfg.get('max_bps'))
         self.min_bps       = int(self.cfg.get('min_bps'))
         # allow max_bps and min_bps to be specified in kbps
@@ -175,6 +178,15 @@ class MediaStream:
         self.updateSession(reply)
         content_list = self.parseMediaReply(reply)
         game_url = self.requestSpecificMedia()
+        if self.cfg.get('use_nexdef'):
+            # EXPERIMENTAL: Use the wired60 list always
+            # replace default playlist with 60 fps version in base64 url
+            game_url = base64.encodestring(
+                base64.decodestring(game_url).replace(
+                    'master_wired_web.m3u8',
+                    'master_wired60.m3u8'
+                )
+            ).replace('\n', '')
         return game_url
 
 
