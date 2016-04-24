@@ -449,13 +449,18 @@ class MLBSchedule:
         gid = gid.replace('/','_')
         gid = gid.replace('-','_')
         url = self.grid.replace('grid.xml','gid_' + gid + '/media/highlights.xml')
+        url_es = self.grid.replace('grid.xml','gid_' + gid + '/media/highlights_es.xml')
         out = []
         try:
             rsp = self.http.getUrl(url)
         except:
-            return out
-            self.error_str = "Could not find highlights.xml for " + gameid
-            raise Exception,self.error_str
+            try:
+                rsp = self.http.getUrl(url_es)
+            except:
+                return out
+            #return out
+            #self.error_str = "Could not find highlights.xml for " + gameid
+            #raise Exception,self.error_str
         try:
             xp  = parseString(rsp)
         except:
