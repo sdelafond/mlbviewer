@@ -841,7 +841,7 @@ def mainloop(myscr,mycfg,mykeys):
             try:
                 if mywin == calwin:
                     prefer = calwin.alignCursors(mysched,listwin)
-                available = mysched.getTopPlays(GAMEID)
+                available = mysched.getTopPlays(GAMEID,mycfg.get('use_nexdef'))
             except:
                 if mycfg.get('debug'):
                     raise
@@ -1207,8 +1207,13 @@ def mainloop(myscr,mycfg,mykeys):
             myscr.refresh()
             if mywin == topwin:
                 # top plays are handled just a bit differently from video
-                streamtype = 'highlight'
                 mediaUrl = topwin.records[topwin.current_cursor][2]
+                mediaStream.media_state = 'MEDIA_ON'
+                if mycfg.get('use_nexdef'):
+                    streamtype = 'video'
+                    mediaUrl = mediaStream.prepareMediaStreamer(mediaUrl)
+                else:
+                    streamtype = 'highlight'
                 eventId  = topwin.records[topwin.current_cursor][4]
             else:
                 try:

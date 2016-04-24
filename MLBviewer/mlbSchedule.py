@@ -444,7 +444,7 @@ class MLBSchedule:
         return out
 
 
-    def getXmlTopPlays(self,gameid):
+    def getXmlTopPlays(self,gameid,use_nexdef):
         gid = gameid
         gid = gid.replace('/','_')
         gid = gid.replace('-','_')
@@ -485,17 +485,18 @@ class MLBSchedule:
                     scenario = urls.getAttribute('playback-scenario')
                 #state    = urls.getAttribute('state')
                 speed_pat = re.compile(r'FLASH_([1-9][0-9]*)K')
-                if re.match(speed_pat,scenario):
-                    speed = int(re.search(speed_pat,scenario).groups()[0])
-                    if speed > selected:
-                        selected = speed
-                    url = urls.childNodes[0].data
-            out.append(( title, headline, url, '0', gameid, '0')) 
+                if use_nexdef:
+                    if scenario == 'HTTP_CLOUD_TABLET_60':
+                        url = urls.childNodes[0].data
+                else:
+                    if scenario == 'FLASH_1200K_640X360':
+                        url = urls.childNodes[0].data
+            out.append(( title, headline, url, 'MEDIA_ON', gameid, '0')) 
         return out
 
-    def getTopPlays(self,gameid):
+    def getTopPlays(self,gameid,use_nexdef=False):
         listtime = datetime.datetime(self.year, self.month, self.day)
-        return self.getXmlTopPlays(gameid)
+        return self.getXmlTopPlays(gameid,use_nexdef)
 
     def getListings(self, myspeed, blackout):
         listtime = datetime.datetime(self.year, self.month, self.day)
