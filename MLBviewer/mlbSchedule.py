@@ -449,13 +449,13 @@ class MLBSchedule:
         gid = gid.replace('/','_')
         gid = gid.replace('-','_')
         url = self.grid.replace('grid.xml','gid_' + gid + '/media/highlights.xml')
-        url_es = self.grid.replace('grid.xml','gid_' + gid + '/media/highlights_es.xml')
+        url_mobile = self.grid.replace('grid.xml','gid_' + gid + '/media/mobile.xml')
         out = []
         try:
             rsp = self.http.getUrl(url)
         except:
             try:
-                rsp = self.http.getUrl(url_es)
+                rsp = self.http.getUrl(url_mobile)
             except:
                 return out
             #return out
@@ -474,19 +474,23 @@ class MLBSchedule:
 
         for highlight in xp.getElementsByTagName('media'):
             selected = 0
+            url = ''
             type = highlight.getAttribute('type')
             id   = highlight.getAttribute('id')
             v    = highlight.getAttribute('v')
             headline = highlight.getElementsByTagName('headline')[0].childNodes[0].data
             for urls in highlight.getElementsByTagName('url'):
                 scenario = urls.getAttribute('playback_scenario')
-                state    = urls.getAttribute('state')
+                if not scenario:
+                    scenario = urls.getAttribute('playback-scenario')
+                #state    = urls.getAttribute('state')
                 speed_pat = re.compile(r'FLASH_([1-9][0-9]*)K')
-                speed = int(re.search(speed_pat,scenario).groups()[0])
-                if speed > selected:
-                    selected = speed
+                if re.match(speed_pat,scenario):
+                    speed = int(re.search(speed_pat,scenario).groups()[0])
+                    if speed > selected:
+                        selected = speed
                     url = urls.childNodes[0].data
-            out.append(( title, headline, url, state, gameid, '0')) 
+            out.append(( title, headline, url, '0', gameid, '0')) 
         return out
 
     def getTopPlays(self,gameid):
