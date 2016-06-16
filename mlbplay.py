@@ -120,7 +120,7 @@ if len(sys.argv) > 1:
         # PlusVideo: pv=<teamcode>
         elif split[0] in ( 'video', 'pv' ):
             streamtype = 'video'
-            mycfg.set('enhanced', True)
+            mycfg.set('prefer_plus', True)
             teamcode = split[1]
             player = mycfg.get('video_player')
         # Speed: p=<speed> (Default: 1200)
@@ -185,7 +185,8 @@ if startdate is None:
     startdate = (now.year, now.month, now.day)
 
 # First create a schedule object
-mysched = MLBSchedule(ymd_tuple=startdate,time_shift=mycfg.get('time_offset'))
+mysched = MLBSchedule(ymd_tuple=startdate,time_shift=mycfg.get('time_offset'),
+                      cfg=mycfg)
 
 # Now retrieve the listings for that day
 try:
@@ -232,7 +233,7 @@ if teamcode is not None:
 
 # Added to support requesting specific games of a double-header
 cli_event_id = mycfg.get('event_id')
-mlbplus = mycfg.get('enhanced')
+mlbplus = mycfg.get('prefer_plus')
 
 if len(media) > 0:
     stream = None

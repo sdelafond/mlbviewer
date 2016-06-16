@@ -186,7 +186,7 @@ def mainloop(myscr,mycfg,mykeys):
     mlbsched = MLBSchedule(ymd_tuple=startdate,
                           time_shift=mycfg.get('time_offset'),
                           use_wired_web=mycfg.get('use_wired_web'),
-                          plus=mycfg.get('prefer_plus'),
+                          cfg=mycfg,
                           international=mycfg.get('international'))
     milbsched = MiLBSchedule(ymd_tuple=startdate,
                              time_shift=mycfg.get('time_offset'))
@@ -1026,6 +1026,8 @@ def mainloop(myscr,mycfg,mykeys):
         if c in mykeys.get('MLBPLUS'):
             val=(True,False)[mycfg.get('prefer_plus')]
             mycfg.set('prefer_plus',val)
+            curses.ungetch(mykeys.get('REFRESH')[0])
+            c = myscr.getch()
 
         if c in mykeys.get('DIVISION'):
             val=(True,False)[mycfg.get('highlight_division')]

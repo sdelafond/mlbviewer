@@ -81,7 +81,7 @@ class MLBSchedule:
         ymd_tuple = kwargs.get('ymd_tuple')
         time_shift = kwargs.get('time_shift')
         self.international = kwargs.get('international')
-        self.plus = kwargs.get('plus',None)
+        self.cfg = kwargs.get('cfg')
         # Default to today
         if not ymd_tuple:
             now = datetime.datetime.now()
@@ -269,7 +269,7 @@ class MLBSchedule:
                    if tmp['type'] == 'mlbtv_national':
                        coverage = '0'
                    elif tmp['type'] == 'mlbtv_enhanced':
-                       if not self.plus: 
+                       if not self.cfg.get('prefer_plus'): 
                            continue
                        coverage = '+'
                    elif tmp['type'] == 'mlbtv_away':
