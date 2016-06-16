@@ -81,6 +81,7 @@ class MLBSchedule:
         ymd_tuple = kwargs.get('ymd_tuple')
         time_shift = kwargs.get('time_shift')
         self.international = kwargs.get('international')
+        self.plus = kwargs.get('plus',None)
         # Default to today
         if not ymd_tuple:
             now = datetime.datetime.now()
@@ -249,7 +250,7 @@ class MLBSchedule:
                        coverage = home
                    out = (tmp['display'], coverage, tmp['id'], event_id)
                    content['alt_audio'].append(out)
-           elif tmp['type'] in ('mlbtv_national', 'mlbtv_home', 'mlbtv_away'):
+           elif tmp['type'] in ('mlbtv_national', 'mlbtv_home', 'mlbtv_away','mlbtv_enhanced'):
                if tmp['playback_scenario'] in \
                      ( 'HTTP_CLOUD_WIRED', 'HTTP_CLOUD_WIRED_WEB', 'FMS_CLOUD'):
                    # candidate for new procedure: determine whether game is 
@@ -267,6 +268,10 @@ class MLBSchedule:
                    # candidate for new procedure: determine the coverage
                    if tmp['type'] == 'mlbtv_national':
                        coverage = '0'
+                   elif tmp['type'] == 'mlbtv_enhanced':
+                       if not self.plus: 
+                           continue
+                       coverage = '+'
                    elif tmp['type'] == 'mlbtv_away':
                        coverage = away
                    else:

@@ -117,6 +117,12 @@ if len(sys.argv) > 1:
             streamtype = 'video'
             teamcode = split[1]
             player = mycfg.get('video_player')
+        # PlusVideo: pv=<teamcode>
+        elif split[0] in ( 'video', 'pv' ):
+            streamtype = 'video'
+            mycfg.set('enhanced', True)
+            teamcode = split[1]
+            player = mycfg.get('video_player')
         # Speed: p=<speed> (Default: 1200)
         elif split[0] in ( 'speed', 'p' ):
             mycfg.set('speed', split[1])
@@ -226,6 +232,7 @@ if teamcode is not None:
 
 # Added to support requesting specific games of a double-header
 cli_event_id = mycfg.get('event_id')
+mlbplus = mycfg.get('enhanced')
 
 if len(media) > 0:
     stream = None
@@ -235,6 +242,10 @@ if len(media) > 0:
               code,
               content_id,
               event_id ) = m[n]
+            if mlbplus:
+                code = 'plus'
+                if (call_letters == 'MLB'): 
+                    stream = m[n]
             if cli_event_id is not None:
                 if cli_event_id != event_id:
                     continue
@@ -244,6 +255,8 @@ if len(media) > 0:
                 else:
                     stream = m[n]
                 break
+    if stream == None and mlbplus:
+        print "MLB Plus media requested but no MLB Plus media found!"
 else:
     print 'Could not find media for teamcode: ' + teamcode
     sys.exit()

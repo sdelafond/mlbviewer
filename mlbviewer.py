@@ -186,6 +186,7 @@ def mainloop(myscr,mycfg,mykeys):
     mlbsched = MLBSchedule(ymd_tuple=startdate,
                           time_shift=mycfg.get('time_offset'),
                           use_wired_web=mycfg.get('use_wired_web'),
+                          plus=mycfg.get('prefer_plus'),
                           international=mycfg.get('international'))
     milbsched = MiLBSchedule(ymd_tuple=startdate,
                              time_shift=mycfg.get('time_offset'))
@@ -1022,6 +1023,10 @@ def mainloop(myscr,mycfg,mykeys):
                 listwin.focusFavorite()
 
         # TOGGLES
+        if c in mykeys.get('MLBPLUS'):
+            val=(True,False)[mycfg.get('prefer_plus')]
+            mycfg.set('prefer_plus',val)
+
         if c in mykeys.get('DIVISION'):
             val=(True,False)[mycfg.get('highlight_division')]
             mycfg.set('highlight_division',val)
