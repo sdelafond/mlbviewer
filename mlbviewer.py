@@ -1023,12 +1023,6 @@ def mainloop(myscr,mycfg,mykeys):
                 listwin.focusFavorite()
 
         # TOGGLES
-        if c in mykeys.get('MLBPLUS'):
-            val=(True,False)[mycfg.get('prefer_plus')]
-            mycfg.set('prefer_plus',val)
-            curses.ungetch(mykeys.get('REFRESH')[0])
-            c = myscr.getch()
-
         if c in mykeys.get('DIVISION'):
             val=(True,False)[mycfg.get('highlight_division')]
             mycfg.set('highlight_division',val)
@@ -1155,6 +1149,7 @@ def mainloop(myscr,mycfg,mykeys):
         # The Big Daddy Action  
         # With luck, it can handle audio, video, condensed, and highlights
         if c in mykeys.get('VIDEO') or \
+           c in mykeys.get('MLBPLUS') or \
            c in mykeys.get('AUDIO') or \
            c in mykeys.get('ALT_AUDIO') or \
            c in mykeys.get('CONDENSED_GAME'):
@@ -1188,6 +1183,12 @@ def mainloop(myscr,mycfg,mykeys):
                     continue
             else:
                 streamtype = 'video'
+                if c in mykeys.get('MLBPLUS'):
+                    if prefer.has_key('plus'):
+                        prefer['video'] = prefer['plus']
+                    else:
+                        mywin.errorScreen('ERROR: Requested media not available.')
+                        continue
             mywin.statusWrite('Retrieving requested media...')
 
             # for nexdef, use the innings list to find the correct start time

@@ -269,8 +269,6 @@ class MLBSchedule:
                    if tmp['type'] == 'mlbtv_national':
                        coverage = '0'
                    elif tmp['type'] == 'mlbtv_enhanced':
-                       if not self.cfg.get('prefer_plus'): 
-                           continue
                        coverage = '+'
                    elif tmp['type'] == 'mlbtv_away':
                        coverage = away
@@ -523,6 +521,8 @@ class MLBSchedule:
                 media['video']['home'] = elem
             elif awaycode and awaycode in elem[1]:
                 media['video']['away'] = elem
+            elif elem[1] == '+':
+                media['video']['plus'] = elem
             else:
                 # handle game of the week
                 media['video']['home'] = elem
@@ -586,6 +586,8 @@ class MLBSchedule:
                             prefer[type] = None
                     except:
                         prefer[type] = None
+        if media['video'].has_key('plus'):
+            prefer['plus']=media['video']['plus']
         return prefer
  
     def Jump(self, ymd_tuple, myspeed, blackout):
