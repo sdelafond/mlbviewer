@@ -9,3 +9,7 @@ export PYBUILD_NAME=mlbviewer
 
 %:
 	dh $@ --with python2 --buildsystem=pybuild
+
+override_dh_python2:
+	dh_python2
+	rm -fr debian/mlbviewer/usr/share/doc/mlbviewer/INSTALL
