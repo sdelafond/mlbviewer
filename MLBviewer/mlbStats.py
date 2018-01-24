@@ -81,6 +81,7 @@ class MLBStats:
         self.active_sw = int(self.mycfg.get('active_sw'))
         if self.active_sw:
             self.url += '&active_sw=%27Y%27'
+        return self.url
 
     def prepareTripleCrownUrl(self):
         if self.type == 'pitching':

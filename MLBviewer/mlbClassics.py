@@ -17,8 +17,9 @@ try:
     import gdata.youtube
     import gdata.youtube.service
 except:
-    print "Missing dependency: python-gdata required for mlbclassics"
-    sys.exit()
+    pass
+    #print "Missing dependency: python-gdata required for mlbclassics"
+    #sys.exit()
 
 from operator import itemgetter
 

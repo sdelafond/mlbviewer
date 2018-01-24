@@ -81,6 +81,7 @@ class MLBSchedule:
         ymd_tuple = kwargs.get('ymd_tuple')
         time_shift = kwargs.get('time_shift')
         self.international = kwargs.get('international')
+        self.cfg = kwargs.get('cfg')
         # Default to today
         if not ymd_tuple:
             now = datetime.datetime.now()
@@ -211,11 +212,8 @@ class MLBSchedule:
         content['audio'] = []
         content['alt_audio'] = []
         content['video'] = {}
-        content['video']['300'] = []
-        content['video']['500'] = []
-        content['video']['1200'] = []
-        content['video']['1800'] = []
-        content['video']['2400'] = []
+        for s in STREAM_SPEEDS:
+            content['video'][s]= []
         content['video']['swarm'] = []
         content['condensed'] = []
         event_id = str(xp.getAttribute('calendar_event_id'))
@@ -252,7 +250,7 @@ class MLBSchedule:
                        coverage = home
                    out = (tmp['display'], coverage, tmp['id'], event_id)
                    content['alt_audio'].append(out)
-           elif tmp['type'] in ('mlbtv_national', 'mlbtv_home', 'mlbtv_away'):
+           elif tmp['type'] in ('mlbtv_national', 'mlbtv_home', 'mlbtv_away','mlbtv_enhanced'):
                if tmp['playback_scenario'] in \
                      ( 'HTTP_CLOUD_WIRED', 'HTTP_CLOUD_WIRED_WEB', 'FMS_CLOUD'):
                    # candidate for new procedure: determine whether game is 
@@ -270,6 +268,8 @@ class MLBSchedule:
                    # candidate for new procedure: determine the coverage
                    if tmp['type'] == 'mlbtv_national':
                        coverage = '0'
+                   elif tmp['type'] == 'mlbtv_enhanced':
+                       coverage = '+'
                    elif tmp['type'] == 'mlbtv_away':
                        coverage = away
                    else:
@@ -295,7 +295,7 @@ class MLBSchedule:
                        if self.use_wired_web:
                            content['video']['swarm'].append(out)
                    elif tmp['playback_scenario'] == 'FMS_CLOUD':
-                       for s in ('300', '500', '1200', '1800', '2400'):
+                       for s in STREAM_SPEEDS:
                            content['video'][s].append(out)
                    else:
                        continue
@@ -380,15 +380,14 @@ class MLBSchedule:
                 TEAMCODES[dct['home']] = TEAMCODES['unk']
             #raise Exception,repr(game)
             dct['video'] = {}
-            dct['video']['128'] = []
-            dct['video']['500'] = []
-            dct['video']['800'] = []
-            dct['video']['1200'] = []
-            dct['video']['1800'] = []
+            for s in STREAM_SPEEDS:
+                dct['video'][s] = []
             dct['video']['swarm'] = []
             dct['condensed'] = []
             #raise Exception,repr(game['content']['video'])
-            for key in ('300', '500', '1200', '1800', '2400', 'swarm'):
+            speeds=list(STREAM_SPEEDS)
+            speeds.append('swarm')
+            for key in speeds:
                 try:
                     dct['video'][key] = game['content']['video'][key]
                 except KeyError:
@@ -448,18 +447,23 @@ class MLBSchedule:
         return out
 
 
-    def getXmlTopPlays(self,gameid):
+    def getXmlTopPlays(self,gameid,use_nexdef):
         gid = gameid
         gid = gid.replace('/','_')
         gid = gid.replace('-','_')
         url = self.grid.replace('grid.xml','gid_' + gid + '/media/highlights.xml')
+        url_mobile = self.grid.replace('grid.xml','gid_' + gid + '/media/mobile.xml')
         out = []
         try:
             rsp = self.http.getUrl(url)
         except:
-            return out
-            self.error_str = "Could not find highlights.xml for " + gameid
-            raise Exception,self.error_str
+            try:
+                rsp = self.http.getUrl(url_mobile)
+            except:
+                return out
+            #return out
+            #self.error_str = "Could not find highlights.xml for " + gameid
+            #raise Exception,self.error_str
         try:
             xp  = parseString(rsp)
         except:
@@ -473,24 +477,29 @@ class MLBSchedule:
 
         for highlight in xp.getElementsByTagName('media'):
             selected = 0
+            url = ''
             type = highlight.getAttribute('type')
             id   = highlight.getAttribute('id')
             v    = highlight.getAttribute('v')
             headline = highlight.getElementsByTagName('headline')[0].childNodes[0].data
             for urls in highlight.getElementsByTagName('url'):
                 scenario = urls.getAttribute('playback_scenario')
-                state    = urls.getAttribute('state')
+                if not scenario:
+                    scenario = urls.getAttribute('playback-scenario')
+                #state    = urls.getAttribute('state')
                 speed_pat = re.compile(r'FLASH_([1-9][0-9]*)K')
-                speed = int(re.search(speed_pat,scenario).groups()[0])
-                if speed > selected:
-                    selected = speed
-                    url = urls.childNodes[0].data
-            out.append(( title, headline, url, state, gameid, '0')) 
+                if use_nexdef:
+                    if scenario == 'HTTP_CLOUD_TABLET_60':
+                        url = urls.childNodes[0].data
+                else:
+                    if scenario == 'FLASH_1200K_640X360':
+                        url = urls.childNodes[0].data
+            out.append(( title, headline, url, 'MEDIA_ON', gameid, '0')) 
         return out
 
-    def getTopPlays(self,gameid):
+    def getTopPlays(self,gameid,use_nexdef=False):
         listtime = datetime.datetime(self.year, self.month, self.day)
-        return self.getXmlTopPlays(gameid)
+        return self.getXmlTopPlays(gameid,use_nexdef)
 
     def getListings(self, myspeed, blackout):
         listtime = datetime.datetime(self.year, self.month, self.day)
@@ -512,6 +521,8 @@ class MLBSchedule:
                 media['video']['home'] = elem
             elif awaycode and awaycode in elem[1]:
                 media['video']['away'] = elem
+            elif elem[1] == '+':
+                media['video']['plus'] = elem
             else:
                 # handle game of the week
                 media['video']['home'] = elem
@@ -575,6 +586,8 @@ class MLBSchedule:
                             prefer[type] = None
                     except:
                         prefer[type] = None
+        if media['video'].has_key('plus'):
+            prefer['plus']=media['video']['plus']
         return prefer
  
     def Jump(self, ymd_tuple, myspeed, blackout):

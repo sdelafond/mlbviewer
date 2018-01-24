@@ -50,7 +50,11 @@ class MLBMediaDetail:
                 ( gamedata['media']['video']['home'], \
                   gamedata['media']['video']['away'] ) = game[2]
             except:
-                if len(game[2]) == 1:
+                if len(game[2]) == 3:
+                    ( gamedata['media']['video']['home'], \
+                      gamedata['media']['video']['away'], \
+                      gamedata['media']['video']['plus'] ) = game[2]
+                elif len(game[2]) == 1:
                     try:
                         team = STATS_TEAMS[int(game[2][0][1])]
                     except:

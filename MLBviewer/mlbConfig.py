@@ -105,7 +105,7 @@ class MLBConfig:
                              'live_from_start', 'use_nexdef', 'milbtv',
                              'adaptive_stream', 'show_inning_frames', 
                              'postseason', 'use_librtmp', 'no_lirc', 
-                             'disable_favorite_follow',
+                             'disable_favorite_follow', 'prefer_plus',
                              'highlight_division',
                              'gameday_audio',
                              'international',
