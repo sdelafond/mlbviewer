@@ -180,6 +180,8 @@ class MLBListWin:
                 #    ' '.join(TEAMCODES[home][1:]).strip()
                 if len(self.records[n]) > 8 and self.records[n][9]:
                     s += ' [FREE]'
+                if len(self.records[n][2])>2 and self.records[n][2][2][1]=='+':
+                    s += ' [PLUS]'
                 if self.records[n][7] == 'media_archive':
                     s += ' (Archived)'
 

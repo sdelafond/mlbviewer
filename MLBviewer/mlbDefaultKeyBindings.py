@@ -38,4 +38,5 @@ DEFAULT_KEYBINDINGS = {
     'POSTSEASON'         : [ ord('P') ],
     'CALENDAR'           : [ ord('C') ],
     'DIVISION'           : [ ord('D') ],
+    'MLBPLUS'            : [ ord('+') ],
 }

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# coding=UTF-8
 
 import curses
 import curses.textpad
@@ -185,6 +186,7 @@ def mainloop(myscr,mycfg,mykeys):
     mlbsched = MLBSchedule(ymd_tuple=startdate,
                           time_shift=mycfg.get('time_offset'),
                           use_wired_web=mycfg.get('use_wired_web'),
+                          cfg=mycfg,
                           international=mycfg.get('international'))
     milbsched = MiLBSchedule(ymd_tuple=startdate,
                              time_shift=mycfg.get('time_offset'))
@@ -840,7 +842,7 @@ def mainloop(myscr,mycfg,mykeys):
             try:
                 if mywin == calwin:
                     prefer = calwin.alignCursors(mysched,listwin)
-                available = mysched.getTopPlays(GAMEID)
+                available = mysched.getTopPlays(GAMEID,mycfg.get('use_nexdef'))
             except:
                 if mycfg.get('debug'):
                     raise
@@ -1147,6 +1149,7 @@ def mainloop(myscr,mycfg,mykeys):
         # The Big Daddy Action  
         # With luck, it can handle audio, video, condensed, and highlights
         if c in mykeys.get('VIDEO') or \
+           c in mykeys.get('MLBPLUS') or \
            c in mykeys.get('AUDIO') or \
            c in mykeys.get('ALT_AUDIO') or \
            c in mykeys.get('CONDENSED_GAME'):
@@ -1180,6 +1183,12 @@ def mainloop(myscr,mycfg,mykeys):
                     continue
             else:
                 streamtype = 'video'
+                if c in mykeys.get('MLBPLUS'):
+                    if prefer.has_key('plus'):
+                        prefer['video'] = prefer['plus']
+                    else:
+                        mywin.errorScreen('ERROR: Requested media not available.')
+                        continue
             mywin.statusWrite('Retrieving requested media...')
 
             # for nexdef, use the innings list to find the correct start time
@@ -1206,8 +1215,13 @@ def mainloop(myscr,mycfg,mykeys):
             myscr.refresh()
             if mywin == topwin:
                 # top plays are handled just a bit differently from video
-                streamtype = 'highlight'
                 mediaUrl = topwin.records[topwin.current_cursor][2]
+                mediaStream.media_state = 'MEDIA_ON'
+                if mycfg.get('use_nexdef'):
+                    streamtype = 'video'
+                    mediaUrl = mediaStream.prepareMediaStreamer(mediaUrl)
+                else:
+                    streamtype = 'highlight'
                 eventId  = topwin.records[topwin.current_cursor][4]
             else:
                 try:
@@ -1308,7 +1322,7 @@ if __name__ == "__main__":
                   'wiggle_timer': 0.5,
                   'x_display': '',
                   'top_plays_player': '',
-                  'max_bps': 2400,
+                  'max_bps': 2500,
                   'min_bps': 1200,
                   'live_from_start': 0,
                   'use_nexdef': 0,

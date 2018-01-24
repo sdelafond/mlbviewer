@@ -22,6 +22,7 @@ import cookielib
 import os
 import subprocess
 import select
+import base64
 
 from copy import deepcopy
 from xml.dom.minidom import parse
@@ -52,7 +53,9 @@ class MediaStream:
         self.use_nexdef    = self.cfg.get('use_nexdef')
         self.postseason    = self.cfg.get('postseason')
         self.use_librtmp   = self.cfg.get('use_librtmp')
-        self.use_wired_web = self.cfg.get('use_wired_web')
+        # EXPERIMENTAL: make this a default now
+        #self.use_wired_web = self.cfg.get('use_wired_web')
+        self.use_wired_web = 1
         self.max_bps       = int(self.cfg.get('max_bps'))
         self.min_bps       = int(self.cfg.get('min_bps'))
         # allow max_bps and min_bps to be specified in kbps
@@ -175,6 +178,15 @@ class MediaStream:
         self.updateSession(reply)
         content_list = self.parseMediaReply(reply)
         game_url = self.requestSpecificMedia()
+        if self.cfg.get('use_nexdef'):
+            # EXPERIMENTAL: Use the wired60 list always
+            # replace default playlist with 60 fps version in base64 url
+            game_url = base64.encodestring(
+                base64.decodestring(game_url).replace(
+                    'master_wired_web.m3u8',
+                    'master_wired60.m3u8'
+                )
+            ).replace('\n', '')
         return game_url
 
 
@@ -428,12 +440,16 @@ class MediaStream:
 
 
     def prepareMediaStreamer(self,game_url):
+        # It seems rtmpdump is no longer needed for condensed
         if self.streamtype == 'condensed':
-            if self.cfg.get('use_librtmp'):
-                return self.prepareFmsUrl(game_url)
-            else:
-                return 'rtmpdump -o - -r %s' % game_url
-        elif self.streamtype == 'classics':
+            return game_url
+        #if self.streamtype == 'condensed':
+        #    if self.cfg.get('use_librtmp'):
+        #        return self.prepareFmsUrl(game_url)
+        #    else:
+        #        return 'rtmpdump -o - -r %s' % game_url
+        #elif self.streamtype == 'classics':
+        if self.streamtype == 'classics':
             return 'youtube-dl -o - \'%s\'' % game_url
         elif self.cfg.get('use_nexdef') and self.streamtype not in ( 'audio', 'alt_audio' ):
             self.nexdef_media_url = game_url
@@ -610,7 +626,7 @@ class MediaStream:
             if streamtype == 'video' and self.cfg.get('use_nexdef'):
                 cmd_str = player.replace('%s', '-')
                 cmd_str  = media_url + ' | ' + cmd_str
-            elif self.cfg.get('use_librtmp') or streamtype == 'highlight':
+            elif self.cfg.get('use_librtmp') or streamtype in ('highlight','condensed'):
                 cmd_str = player.replace('%s', media_url)
             else:
                 cmd_str = player.replace('%s', '-')
@@ -618,7 +634,7 @@ class MediaStream:
         else:
             if streamtype == 'video' and self.cfg.get('use_nexdef'):
                 cmd_str = media_url + ' | ' + player + ' - '
-            elif self.cfg.get('use_librtmp') or streamtype == 'highlight':
+            elif self.cfg.get('use_librtmp') or streamtype in ('highlight','condensed'):
                 cmd_str = player + ' ' + media_url
             else:
                 cmd_str = media_url + ' | ' + player + ' - '
@@ -690,7 +706,9 @@ class MediaStream:
             self.log.write('locateCondensedMedia: %s\n' % cvUrl)
             self.log.write(str(detail))
             raise Exception,self.error_str
-        if int(self.cfg.get('speed')) >= 1800:
+        if int(self.cfg.get('speed')) >= 2500:
+            playback_scenario = 'FLASH_2500K_1280X720'
+        elif int(self.cfg.get('speed')) >= 1800:
             playback_scenario = 'FLASH_1800K_960X540'
         else:
             playback_scenario = 'FLASH_1200K_640X360'

@@ -110,7 +110,9 @@ additional options supported through the configuration file.
 
 show_player_command (True/False): displays the command used to play the media
 
-video_player, audio_player, top_plays_player : the player commands to use
+video_player, audio_player, top_plays_player : the player commands to
+use (this can be useful to dump a game for later watching, for
+instance through video_player="vlc -I dummy --sout file/ts:game.mpg")
 
 If not specified on mlbplay command-line, these values are taken from config
 file or mlbviewer defaults:
