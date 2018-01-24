@@ -1,3 +1,11 @@
+mlbviewer (2017.05.11.1-1) unstable; urgency=medium
+
+  * Include latest upstream changes from svn
+  * Bump up Standards-Version
+  * Update Vcs-* to point to salsa.d.o
+
+ -- Sebastien Delafond <seb@debian.org>  Wed, 24 Jan 2018 12:12:36 +0100
+
 mlbviewer (2015.sf.1-2) unstable; urgency=medium
 
   * Remove pyc files from repository
