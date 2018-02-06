@@ -1,3 +1,9 @@
+mlbviewer (2017.05.11.1-2) unstable; urgency=medium
+
+  * Switch to DEP 14
+
+ -- Sebastien Delafond <seb@debian.org>  Tue, 06 Feb 2018 09:34:36 +0100
+
 mlbviewer (2017.05.11.1-1) unstable; urgency=medium
 
   * Include latest upstream changes from svn
